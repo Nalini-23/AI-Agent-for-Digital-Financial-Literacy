@@ -719,7 +719,12 @@ async function checkHealth() {
       dot.classList.remove('offline');
       const s = d.stats || {};
       sub.textContent = 'IBM Granite ' + (s.ibm_granite_enabled ? 'active' : 'fallback') + ' \xB7 ' + (s.knowledge_base_chunks||0) + ' chunks \xB7 ' + (s.supported_languages||10) + ' languages';
-    } else { dot.classList.add('offline'); sub.textContent = 'Service error'; }
+    } else if (d.status === 'loading') {
+      dot.classList.remove('offline');
+      dot.style.background = '#f1c21b';
+      sub.textContent = 'Initializing AI model\u2026 please wait (30-60s on first load)';
+      setTimeout(checkHealth, 5000); // retry every 5s until ready
+    } else { dot.classList.add('offline'); sub.textContent = 'Service error: ' + (d.message||''); }
   } catch { dot.classList.add('offline'); sub.textContent = 'Server offline \u2014 run: python app.py'; }
 }
 

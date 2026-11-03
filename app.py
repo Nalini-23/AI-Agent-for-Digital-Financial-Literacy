@@ -5,38 +5,84 @@ Serves both the REST API endpoints and the static frontend.
 
 import os
 import uuid
+import threading
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 
 load_dotenv()
 
-# Lazy-load agent to avoid slow startup
+# Agent is loaded once in a background thread at startup
 _agent = None
+_agent_ready = False
+_agent_error = None
+_agent_lock = threading.Lock()
+
+
+def _load_agent_background():
+    """Load the agent in a background thread so the server starts instantly."""
+    global _agent, _agent_ready, _agent_error
+    try:
+        from src.agent import FinancialLiteracyAgent
+        use_ibm = bool(os.getenv("IBM_API_KEY") and os.getenv("IBM_PROJECT_ID"))
+        agent = FinancialLiteracyAgent(use_ibm_llm=use_ibm)
+        with _agent_lock:
+            _agent = agent
+            _agent_ready = True
+        print("Agent ready.")
+    except Exception as e:
+        with _agent_lock:
+            _agent_error = str(e)
+            _agent_ready = True  # mark ready so health check stops spinning
+        print(f"Agent load error: {e}")
 
 
 def get_agent():
-    global _agent
-    if _agent is None:
-        from src.agent import FinancialLiteracyAgent
-        # Use IBM LLM only if credentials are configured
-        use_ibm = bool(os.getenv("IBM_API_KEY") and os.getenv("IBM_PROJECT_ID"))
-        _agent = FinancialLiteracyAgent(use_ibm_llm=use_ibm)
-    return _agent
+    """Return the agent, waiting up to 120s for background load to finish."""
+    import time
+    deadline = time.time() + 120
+    while time.time() < deadline:
+        with _agent_lock:
+            if _agent is not None:
+                return _agent
+            if _agent_error:
+                raise RuntimeError(f"Agent failed to load: {_agent_error}")
+        time.sleep(0.5)
+    raise RuntimeError("Agent not ready yet — still loading. Please retry in a few seconds.")
 
 
 def create_app() -> Flask:
     app = Flask(__name__, static_folder="static", static_url_path="")
     CORS(app, origins="*")
 
+    # Start background agent load immediately when the app is created
+    t = threading.Thread(target=_load_agent_background, daemon=True)
+    t.start()
+
     # ─── API Routes ────────────────────────────────────────────────────────────
 
     @app.route("/api/health", methods=["GET"])
     def health():
-        """Health check endpoint."""
+        """Health check — responds instantly even while agent is still loading."""
+        with _agent_lock:
+            ready = _agent_ready
+            err = _agent_error
+            agent_obj = _agent
+        if err:
+            return jsonify({"status": "error", "message": err}), 500
+        if not ready or agent_obj is None:
+            return jsonify({
+                "status": "loading",
+                "message": "Agent is initializing, please wait…",
+                "stats": {
+                    "knowledge_base_chunks": 0,
+                    "active_sessions": 0,
+                    "ibm_granite_enabled": bool(os.getenv("IBM_API_KEY")),
+                    "supported_languages": 10,
+                }
+            }), 200
         try:
-            agent = get_agent()
-            stats = agent.get_stats()
+            stats = agent_obj.get_stats()
             return jsonify({"status": "healthy", "stats": stats}), 200
         except Exception as e:
             return jsonify({"status": "error", "message": str(e)}), 500
