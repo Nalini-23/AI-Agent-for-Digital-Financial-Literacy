@@ -1,0 +1,26 @@
+# Web Framework
+flask>=3.0.2
+flask-cors>=4.0.0
+gunicorn>=21.2.0
+
+# IBM Watson / Granite AI
+ibm-watsonx-ai>=0.2.6
+ibm-cloud-sdk-core>=3.18.0
+
+# RAG & Vector Store
+chromadb>=0.4.22
+sentence-transformers>=2.3.1
+langchain>=0.1.0
+langchain-community>=0.0.20
+langchain-ibm>=0.1.0
+langchain-text-splitters>=0.0.1
+
+# Multilingual Support
+deep-translator>=1.11.4
+langdetect>=1.0.9
+
+# Utilities
+python-dotenv>=1.0.1
+pydantic>=2.6.1
+numpy>=1.26.4
+requests>=2.31.0

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "budget_001",
+    "topic": "Budgeting",
+    "title": "Personal Budgeting - The 50/30/20 Rule",
+    "language": "en",
+    "source": "Financial Planning Standards Board India",
+    "content": "\nPersonal Budgeting Guide for India:\n\nTHE 50/30/20 RULE (Recommended Framework):\n\n50% – NEEDS (Essential Expenses)\n- Rent/EMI\n- Groceries and household essentials\n- Utilities (electricity, water, internet, phone)\n- Transportation to work\n- Insurance premiums\n- Minimum loan payments\n\n30% – WANTS (Discretionary Expenses)\n- Eating out and entertainment\n- Shopping for non-essentials\n- Subscriptions (OTT, gym)\n- Holidays\n- Gadgets and lifestyle\n\n20% – SAVINGS AND INVESTMENTS\n- Emergency fund (target: 6 months of expenses)\n- Retirement savings (PPF, NPS, EPF top-up)\n- Goal-based investments (mutual funds SIP, RD)\n- Additional loan prepayment\n\nSTEP-BY-STEP BUDGETING:\n\nStep 1: Calculate your TAKE-HOME income (after tax and PF deduction)\nStep 2: List all FIXED expenses (EMI, rent, insurance premiums)\nStep 3: List VARIABLE expenses (groceries, fuel, eating out)\nStep 4: Categorize each expense into Needs/Wants/Savings\nStep 5: Check if proportions are within 50/30/20\nStep 6: Identify where to cut if overspending\n\nBUDGETING TOOLS (Free):\n- ET Money (Indian app)\n- Walnut\n- Money Manager\n- Google Sheets / Excel\n\nEMERGENCY FUND:\n- Most critical financial safety net\n- Target: 3-6 months of TOTAL monthly expenses (not income)\n- Keep in: Liquid Fund or high-interest savings account (not FD – penalty for early withdrawal)\n- Never invest emergency fund in stocks or mutual funds\n\nEXAMPLE BUDGET (₹50,000 take-home):\nNeeds (₹25,000): Rent ₹12,000 + Food ₹6,000 + Travel ₹3,000 + Utilities ₹2,000 + Insurance ₹2,000\nWants (₹15,000): Eating out ₹4,000 + Entertainment ₹3,000 + Shopping ₹5,000 + Misc ₹3,000\nSavings (₹10,000): SIP ₹5,000 + Emergency Fund ₹3,000 + PPF ₹2,000\n        "
+  },
+  {
+    "id": "budget_002",
+    "topic": "Budgeting",
+    "title": "Government Savings Schemes in India",
+    "language": "en",
+    "source": "India Post, Ministry of Finance",
+    "content": "\nBest Government-Backed Savings Schemes in India:\n\n1. PPF (Public Provident Fund)\n   Interest Rate: 7.1% per annum (compounded annually, government-set quarterly)\n   Lock-in: 15 years (partial withdrawal after 7 years)\n   Investment: ₹500 - ₹1,50,000 per year\n   Tax Benefit: EEE status – contribution, interest, and maturity all tax-free\n   Best for: Long-term wealth creation, tax saving\n   Where to open: Post office, State Bank of India, major banks\n\n2. Sukanya Samriddhi Yojana (SSY)\n   For: Girl child below 10 years\n   Interest Rate: 8.2% per annum\n   Lock-in: Until girl turns 21 (partial withdrawal at 18 for education)\n   Investment: ₹250 - ₹1,50,000 per year\n   Tax: Fully tax-free (EEE)\n\n3. National Savings Certificate (NSC)\n   Interest Rate: 7.7% per annum (compounded semi-annually, paid at maturity)\n   Tenure: 5 years\n   Minimum Investment: ₹1,000 (no maximum)\n   Tax: Investment qualifies for 80C deduction (up to ₹1.5 lakh)\n\n4. Post Office Monthly Income Scheme (POMIS)\n   Interest Rate: 7.4% per annum paid monthly\n   Tenure: 5 years\n   Maximum Investment: ₹9 lakh (individual), ₹15 lakh (joint)\n   Best for: Senior citizens needing regular income\n\n5. Senior Citizen Savings Scheme (SCSS)\n   For: Age 60+ (or 55+ for VRS retirees)\n   Interest Rate: 8.2% per annum (quarterly payout)\n   Maximum Investment: ₹30 lakh\n   Tax: Investment qualifies for 80C; interest is taxable\n\n6. NPS (National Pension System)\n   For: Retirement savings\n   Returns: Market-linked (historically 8-12% per annum)\n   Tax benefit: Extra ₹50,000 deduction under 80CCD(1B) over and above 80C\n   Lock-in: Until age 60\n\nAll government schemes can be opened at India Post offices (post.gov.in) or authorized banks.\n        "
+  },
+  {
+    "id": "budget_tamil_001",
+    "topic": "Budgeting",
+    "title": "பட்ஜெட் திட்டமிடல் - அடிப்படை வழிகாட்டி",
+    "language": "ta",
+    "source": "SEBI முதலீட்டாளர் கல்வி",
+    "content": "\nவருமான மேலாண்மை - 50/30/20 விதி:\n\n50% - அத்தியாவசிய செலவுகள் (வாடகை, உணவு, போக்குவரத்து)\n30% - விரும்பிய செலவுகள் (பொழுதுபோக்கு, வெளியில் சாப்பிடுவது)\n20% - சேமிப்பு மற்றும் முதலீடு\n\nஅவசர நிதி (Emergency Fund):\n- குறைந்தது 6 மாத செலவுகளுக்கு சேமித்து வையுங்கள்\n- நடப்பு கணக்கில் வையுங்கள், பங்குச் சந்தையில் இல்லை\n\nSIP மூலம் முதலீடு:\n- மாதம் ₹500 முதல் தொடங்கலாம்\n- Groww, Zerodha Coin, Paytm Money ஆப்ஸ் பயன்படுத்தலாம்\n        "
+  }
+]

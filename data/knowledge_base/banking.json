@@ -1,0 +1,18 @@
+[
+  {
+    "id": "banking_001",
+    "topic": "Banking",
+    "title": "Types of Bank Accounts and How to Choose",
+    "language": "en",
+    "source": "RBI Financial Literacy",
+    "content": "\nGuide to Bank Accounts in India:\n\nSAVINGS ACCOUNT:\n- Purpose: Day-to-day transactions and savings\n- Interest: 2.5% - 7% per annum (varies by bank)\n- Minimum balance: ₹0 (Zero Balance/BSBD accounts) to ₹10,000 (premium accounts)\n- Features: Debit card, internet banking, UPI, ATM access\n- Best for: Salary credit, daily expenses, emergency fund\n\nZERO BALANCE ACCOUNTS:\n- BSBD (Basic Savings Bank Deposit) Account – free at all banks, mandated by RBI\n- Jan Dhan Account – government scheme, zero balance, ₹10,000 overdraft facility, RuPay card\n- Recommended for: Anyone without a bank account\n\nCURRENT ACCOUNT:\n- For: Businesses and traders (high transaction volume)\n- No interest paid on balance\n- Unlimited transactions allowed\n\nFIXED DEPOSIT (FD):\n- Guaranteed returns: 5.5% - 8% per annum (higher for senior citizens)\n- Lock-in period: 7 days to 10 years\n- Penalty for early withdrawal: Usually 0.5% - 1% reduction in rate\n- Insurance: Up to ₹5 lakh per depositor per bank under DICGC\n- Best for: Short-to-medium term savings, capital preservation\n\nRECURRING DEPOSIT (RD):\n- Monthly fixed amount deposited for a chosen tenure\n- Interest similar to FD\n- Minimum: ₹100/month\n- Best for: Disciplined monthly saving with assured returns\n\nHOW TO OPEN A BANK ACCOUNT (Documents required):\n- PAN card (mandatory)\n- Aadhaar card (KYC document)\n- Passport-size photograph\n- Initial deposit (if required)\n- Can be done online via video KYC for most major banks\n\nRIGHTS AS A BANK CUSTOMER:\n- Right to a Basic Savings Account (zero balance) at any bank\n- Right to a passbook / account statement\n- Right to nominate a beneficiary\n- Right to file grievance with Banking Ombudsman (free of charge) at rbi.org.in\n        "
+  },
+  {
+    "id": "banking_002",
+    "topic": "Banking",
+    "title": "NEFT, RTGS and IMPS - When to Use Which",
+    "language": "en",
+    "source": "RBI Payment Systems",
+    "content": "\nBank Transfer Methods in India - Comparison Guide:\n\nNEFT (National Electronic Funds Transfer):\n- Settlement: In batches every 30 minutes, 24x7 (since December 2019)\n- Minimum: No minimum; Maximum: No limit\n- Charges: Free (RBI directive since January 2020 for online transfers)\n- Use for: Regular non-urgent transfers, bill payments\n- Note: NEFT uses IFSC code + Account number of recipient\n\nRTGS (Real Time Gross Settlement):\n- Settlement: Real-time (instantaneous)\n- Minimum: Rs.2,00,000 (two lakh); No maximum limit\n- Available: 24x7 since December 2020\n- Charges: Free for online transactions (RBI directive)\n- Use for: High-value urgent transfers (property payment, business)\n\nIMPS (Immediate Payment Service):\n- Settlement: Instant, 24x7 including holidays\n- Minimum: Re.1; Maximum: Rs.5,00,000 per transaction\n- Charges: Rs.2.5 - Rs.25 depending on amount (charged by banks)\n- Use for: Urgent transfers any time, lower amounts\n- Note: Can transfer using mobile number + MMID or account + IFSC\n\nUPI (Unified Payments Interface):\n- Settlement: Instant\n- Maximum: Rs.1,00,000 per transaction (Rs.2,00,000 for verified merchants)\n- Charges: Free\n- Use for: Day-to-day transfers up to Rs.1 lakh\n\nQuick Comparison:\n- Speed: RTGS = IMPS = UPI (instant) > NEFT (30-min batch)\n- Minimum amount: RTGS needs Rs.2 lakh; others have no minimum\n- Cost: NEFT/RTGS/UPI are FREE; IMPS may have small charges\n- Best for daily use: UPI (free, instant, mobile-friendly)\n        "
+  }
+]

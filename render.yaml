@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: finlit-ai
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python setup.py"
+    startCommand: "gunicorn \"app:create_app()\" --bind 0.0.0.0:$PORT --timeout 120 --workers 1"
+    envVars:
+      - key: IBM_API_KEY
+        sync: false
+      - key: IBM_PROJECT_ID
+        sync: false
+      - key: IBM_WATSONX_URL
+        value: https://us-south.ml.cloud.ibm.com
+      - key: GRANITE_MODEL_ID
+        value: ibm/granite-4-h-small
+      - key: FLASK_ENV
+        value: production
+      - key: CHROMA_PERSIST_DIR
+        value: /tmp/vector_store

@@ -1,0 +1,181 @@
+
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FinLit AI — Project Summary</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.6;color:#1f2328;background:#fff;padding:32px 16px}
+.page{max-width:760px;margin:0 auto}
+h1{font-size:22px;font-weight:700;color:#0f62fe;margin-bottom:4px}
+.tagline{font-size:13px;color:#57606a;margin-bottom:24px}
+.ibm-badge{display:inline-flex;align-items:center;gap:6px;background:#e8f0fe;border:1px solid #3b82d4;padding:3px 10px;border-radius:4px;font-size:12px;color:#0550ae;margin-bottom:24px}
+h2{font-size:15px;font-weight:700;margin:28px 0 10px;padding-bottom:6px;border-bottom:1px solid #e5e7eb;color:#1f2328}
+h3{font-size:13px;font-weight:700;margin:14px 0 6px;color:#3b82d4}
+p{margin-bottom:8px;color:#1f2328}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:4px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:8px;padding:14px}
+.card h3{margin-top:0;font-size:13px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;margin-right:4px;margin-bottom:4px}
+.b-ibm{background:#dbeafe;color:#0550ae}
+.b-rag{background:#fef3c7;color:#92400e}
+.b-ml{background:#d1fae5;color:#065f46}
+.b-flask{background:#ede9fe;color:#5b21b6}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:4px}
+th{text-align:left;background:#f7f8fa;padding:7px 10px;font-weight:600;border:1px solid #e5e7eb;color:#1f2328}
+td{padding:7px 10px;border:1px solid #e5e7eb;vertical-align:top}
+tr:nth-child(even) td{background:#fafafa}
+code{font-family:monospace;background:#f7f8fa;padding:1px 5px;border-radius:3px;font-size:12px;border:1px solid #e5e7eb}
+.file-tree{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:6px;padding:14px;font-family:monospace;font-size:12px;line-height:1.8;white-space:pre}
+.flow-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}
+.flow-box{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:6px;padding:8px 12px;font-size:12px;text-align:center;min-width:110px}
+.flow-arrow{font-size:14px;color:#57606a}
+.flow-highlight{background:#dbeafe;border-color:#3b82d4;color:#0550ae}
+.lang-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.lang-chip{background:#f7f8fa;border:1px solid #e5e7eb;border-radius:12px;padding:3px 10px;font-size:12px}
+footer{margin-top:40px;padding-top:14px;border-top:1px solid #e5e7eb;text-align:center;font-size:12px;color:#57606a}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <h1>💡 FinLit AI — Digital Financial Literacy Agent</h1>
+  <p class="tagline">IBM Problem Statement #7  ·  RAG + IBM Granite + Multilingual  ·  Empowering financial inclusion in India</p>
+  <div class="ibm-badge">⬡ Powered by IBM Granite 13B  |  IBM Cloud Lite (Free Tier)</div>
+
+  <h2>What the Agent Does</h2>
+  <p>FinLit AI is a conversational AI assistant that retrieves verified financial knowledge and generates personalised answers using <strong>IBM Granite LLM</strong> via watsonx.ai. It supports <strong>10 Indian languages</strong> and covers every major area of personal finance relevant to Indian users.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>💳 UPI &amp; Digital Payments</h3>
+      <p>Step-by-step guides for sending money, creating a UPI ID, understanding QR codes, and safe PIN practices.</p>
+    </div>
+    <div class="card">
+      <h3>🛡️ Scam Prevention</h3>
+      <p>Identifies KYC fraud, fake cashback scams, loan app scams, lottery fraud. Auto-surfaces cyber helpline 1930.</p>
+    </div>
+    <div class="card">
+      <h3>📊 Interest Rates &amp; Loans</h3>
+      <p>Explains simple vs compound interest, safe loan rate benchmarks, EMI calculation, and credit card traps.</p>
+    </div>
+    <div class="card">
+      <h3>💰 Budgeting &amp; Savings</h3>
+      <p>50/30/20 rule, emergency fund sizing, government schemes (PPF, SSY, NSC, NPS, POMIS, SCSS).</p>
+    </div>
+    <div class="card">
+      <h3>📈 Investments &amp; SIP</h3>
+      <p>Mutual fund types, SIP power of compounding, SEBI-registered advisors, ELSS tax savings.</p>
+    </div>
+    <div class="card">
+      <h3>🏦 Banking Basics</h3>
+      <p>Account types, zero-balance Jan Dhan accounts, FD vs RD, DICGC deposit insurance, Banking Ombudsman rights.</p>
+    </div>
+  </div>
+
+  <h2>Architecture</h2>
+  <div class="flow-row">
+    <div class="flow-box">User Query<br /><span style="font-size:10px;color:#57606a">Any language</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Language Detection<br /><span style="font-size:10px;color:#57606a">langdetect</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Translate to EN<br /><span style="font-size:10px;color:#57606a">deep-translator</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box flow-highlight">RAG Retrieval<br /><span style="font-size:10px">ChromaDB + Embeddings</span></div>
+  </div>
+  <div class="flow-row">
+    <div class="flow-box flow-highlight" style="background:#dbeafe;border-color:#3b82d4">IBM Granite LLM<br /><span style="font-size:10px">granite-13b-chat-v2</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Translate Response<br /><span style="font-size:10px;color:#57606a">to user's language</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Chat UI<br /><span style="font-size:10px;color:#57606a">Flask + HTML</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">User<br /><span style="font-size:10px;color:#57606a">Response + Sources</span></div>
+  </div>
+
+  <h2>Technology Stack</h2>
+  <table>
+    <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+    <tr><td><strong>LLM</strong></td><td><code>ibm/granite-13b-chat-v2</code></td><td>Answer generation via IBM watsonx.ai</td></tr>
+    <tr><td><strong>Embeddings</strong></td><td>IBM Slate 125M / sentence-transformers</td><td>Semantic search for RAG</td></tr>
+    <tr><td><strong>Vector Store</strong></td><td>ChromaDB (persistent)</td><td>Knowledge chunk storage &amp; retrieval</td></tr>
+    <tr><td><strong>RAG Framework</strong></td><td>LangChain</td><td>Document splitting &amp; retrieval pipeline</td></tr>
+    <tr><td><strong>Web API</strong></td><td>Flask + Flask-CORS</td><td>REST API &amp; static file serving</td></tr>
+    <tr><td><strong>Translation</strong></td><td>deep-translator</td><td>Query &amp; response translation</td></tr>
+    <tr><td><strong>Lang Detection</strong></td><td>langdetect</td><td>Auto-detect user's language</td></tr>
+    <tr><td><strong>IBM Cloud</strong></td><td>IBM Cloud Lite (Free)</td><td>WatsonX.ai endpoint &amp; API key</td></tr>
+  </table>
+
+  <h2>Supported Languages</h2>
+  <div class="lang-chips">
+    <span class="lang-chip">🇬🇧 English</span>
+    <span class="lang-chip">🇮🇳 हिंदी Hindi</span>
+    <span class="lang-chip">🇮🇳 தமிழ் Tamil</span>
+    <span class="lang-chip">🇮🇳 తెలుగు Telugu</span>
+    <span class="lang-chip">🇮🇳 বাংলা Bengali</span>
+    <span class="lang-chip">🇮🇳 मराठी Marathi</span>
+    <span class="lang-chip">🇮🇳 ગુજરાતી Gujarati</span>
+    <span class="lang-chip">🇮🇳 ಕನ್ನಡ Kannada</span>
+    <span class="lang-chip">🇮🇳 മലയാളം Malayalam</span>
+    <span class="lang-chip">🇮🇳 ਪੰਜਾਬੀ Punjabi</span>
+  </div>
+
+  <h2>Project Files</h2>
+  <div class="file-tree">AI Agent for Digital Financial Literacy/
+├── app.py                    Flask web API + static file server
+├── setup.py                  One-time init: build KB + populate ChromaDB
+├── requirements.txt          All Python dependencies
+├── .env.example              IBM Cloud credential template
+├── README.md                 Full documentation
+│
+├── src/
+│   ├── granite_client.py     IBM Granite LLM wrapper (watsonx.ai)
+│   ├── rag_pipeline.py       ChromaDB ingestion + retrieval pipeline
+│   ├── knowledge_base.py     14 curated financial literacy documents
+│   ├── multilingual.py       Language detection + translation helpers
+│   └── agent.py              Core agent: orchestrates LLM + RAG + memory
+│
+├── static/
+│   └── index.html            Single-page chat UI (IBM design)
+│
+├── data/
+│   ├── knowledge_base/       Generated JSON files (6 topic files)
+│   └── vector_store/         ChromaDB persistent embeddings
+│
+└── tests/
+    └── test_agent.py         25 pytest tests (unit + integration)</div>
+
+  <h2>Knowledge Base (14 Documents)</h2>
+  <table>
+    <tr><th>Topic</th><th>Documents</th><th>Languages</th><th>Sources</th></tr>
+    <tr><td>UPI &amp; Digital Payments</td><td>3</td><td>English, Hindi</td><td>NPCI, RBI</td></tr>
+    <tr><td>Online Scam Prevention</td><td>3</td><td>English, Hindi</td><td>MHA Cyber Crime Portal</td></tr>
+    <tr><td>Interest Rates &amp; Loans</td><td>2</td><td>English</td><td>RBI Financial Education</td></tr>
+    <tr><td>Budgeting &amp; Savings</td><td>3</td><td>English, Tamil</td><td>FPSB India, India Post</td></tr>
+    <tr><td>Personal Finance</td><td>2</td><td>English</td><td>SEBI Investor Education</td></tr>
+    <tr><td>Banking Basics</td><td>1</td><td>English</td><td>RBI Financial Literacy</td></tr>
+  </table>
+
+  <h2>REST API Endpoints</h2>
+  <table>
+    <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+    <tr><td><code>POST</code></td><td><code>/api/chat</code></td><td>Send a message, get AI response with sources</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/health</code></td><td>Agent health check &amp; stats</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/languages</code></td><td>Supported languages list</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/topics</code></td><td>Available financial topics</td></tr>
+    <tr><td><code>GET</code></td><td><code>/api/session/{id}/history</code></td><td>Conversation history</td></tr>
+    <tr><td><code>DELETE</code></td><td><code>/api/session/{id}/reset</code></td><td>Clear session history</td></tr>
+  </table>
+
+  <h2>Quick Start</h2>
+  <p><strong>1.</strong> Get free IBM Cloud Lite account at <strong>cloud.ibm.com</strong> → create Watson Studio project → copy API Key + Project ID into <code>.env</code></p>
+  <p><strong>2.</strong> <code>pip install -r requirements.txt</code></p>
+  <p><strong>3.</strong> <code>python setup.py</code>  (initialises knowledge base and vector store)</p>
+  <p><strong>4.</strong> <code>python app.py</code>  → open <strong>http://localhost:5000</strong></p>
+
+  <footer>Made with IBM Bob</footer>
+</div>
+</body>
+</html>

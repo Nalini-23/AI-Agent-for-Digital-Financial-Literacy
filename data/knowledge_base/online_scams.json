@@ -1,0 +1,34 @@
+[
+  {
+    "id": "scam_001",
+    "topic": "Online Scams",
+    "title": "Types of Online Financial Scams in India",
+    "language": "en",
+    "source": "Ministry of Home Affairs, Cyber Crime Portal",
+    "content": "\nCommon online financial scams in India and how to identify them:\n\n1. PHISHING SCAMS\n   How it works: You receive a fake email/SMS claiming to be from your bank or RBI, asking you to\n   click a link and update your account details.\n   Signs: Urgent language, misspelled domains (e.g., \"rb1.org.in\"), requests for OTP/password\n   Safe practice: Banks NEVER ask for OTP, CVV, or password via email/SMS/call.\n\n2. KYC FRAUD\n   How it works: Call claiming your bank/Paytm/UPI account will be blocked unless you complete\n   \"KYC\" by sharing your Aadhaar number, OTP, or installing an app.\n   Signs: Urgency, pressure, unofficial phone numbers\n   Safe practice: KYC is done at bank branches or through official banking apps only.\n\n3. LOAN APP SCAMS\n   How it works: Instant loan apps that ask for camera/contact/gallery permissions.\n   They then demand high interest and threaten to send morphed photos to your contacts.\n   Signs: No RBI registration, demands for upfront fees, excessive permissions\n   Safe practice: Only borrow from RBI-registered banks/NBFCs. Check at rbi.org.in/scripts/BS_NBFCList.aspx\n\n4. INVESTMENT FRAUD\n   How it works: Promises of \"guaranteed 30% monthly returns\" via WhatsApp groups or Telegram.\n   Signs: Guaranteed high returns, pressure to invest quickly, no SEBI registration\n   Safe practice: Verify investment advisors on SEBI's website at sebi.gov.in. No legitimate investment\n   guarantees returns.\n\n5. LOTTERY / PRIZE SCAMS\n   How it works: \"You've won ₹50 lakh in the KBC lottery! Pay ₹5,000 processing fee.\"\n   Signs: Unsolicited prize, upfront payment required, requests for personal details\n   Safe practice: You cannot win a lottery you did not enter. Never pay to claim a prize.\n\n6. FAKE CUSTOMER CARE NUMBERS\n   How it works: Fraudsters post fake toll-free numbers on Google for Amazon, Flipkart, banks.\n   Signs: Not on the official website, asks for remote access or payment\n   Safe practice: Only use numbers from the official website or the back of your bank card.\n\nCyber Crime reporting:\n- National Cyber Crime Helpline: 1930\n- Online portal: cybercrime.gov.in\n- Report fraud UPI transactions to your bank immediately (within 3 days for best results)\n        "
+  },
+  {
+    "id": "scam_002",
+    "topic": "Online Scams",
+    "title": "How to Verify if a Financial Institution is Legitimate",
+    "language": "en",
+    "source": "RBI, SEBI, IRDAI",
+    "content": "\nHow to verify financial institutions in India:\n\nBANKS:\n- All licensed banks are listed on RBI website: rbi.org.in\n- Look for FDIC equivalent – your deposits up to ₹5,00,000 are insured by DICGC (Deposit Insurance\n  and Credit Guarantee Corporation)\n- Verify bank license at: rbi.org.in/Scripts/bs_ubdcomprehensive.aspx\n\nNBFCs (Non-Banking Financial Companies / Loan Apps):\n- Must be registered with RBI\n- Check the list at: rbi.org.in/Scripts/BS_NBFCList.aspx\n- Legitimate NBFCs do NOT charge upfront processing fees before disbursement\n\nMUTUAL FUNDS & STOCK BROKERS:\n- Must be registered with SEBI\n- Check at: sebi.gov.in or scores.sebi.gov.in\n- Verify advisor registration at AMFI: amfiindia.com\n\nINSURANCE COMPANIES:\n- Must be registered with IRDAI\n- Check at: irdai.gov.in/ADMINCMS/cms/frmGeneral_Layout.aspx?page=PageNo3880\n\nRed flags for fraudulent institutions:\n- No physical address or only P.O. Box\n- Promises guaranteed returns (illegal in India)\n- Asks for money before providing service\n- Not registered with RBI/SEBI/IRDAI\n- Uses WhatsApp or Telegram as primary channel\n- Pressure tactics: \"Offer expires in 1 hour\"\n        "
+  },
+  {
+    "id": "scam_hindi_001",
+    "topic": "Online Scams",
+    "title": "ऑनलाइन वित्तीय धोखाधड़ी से कैसे बचें",
+    "language": "hi",
+    "source": "गृह मंत्रालय, साइबर क्राइम पोर्टल",
+    "content": "\nऑनलाइन वित्तीय धोखाधड़ी के प्रकार और बचाव:\n\n1. फर्जी KYC कॉल: कोई आपको कॉल करके कहता है कि आपका बैंक खाता बंद हो जाएगा।\n   बचाव: बैंक कभी फोन पर OTP या Aadhaar नंबर नहीं मांगता।\n\n2. लॉटरी स्कैम: \"आपने ₹50 लाख जीते हैं, ₹5,000 प्रोसेसिंग फीस भेजें।\"\n   बचाव: जो लॉटरी आपने खरीदी ही नहीं, उसमें आप जीत नहीं सकते।\n\n3. फर्जी लोन ऐप: बिना किसी कागजात के तुरंत लोन का वादा।\n   बचाव: RBI पंजीकृत NBFC से ही लोन लें। rbi.org.in पर जांचें।\n\nअगर धोखाधड़ी हो जाए:\n- तुरंत 1930 पर कॉल करें (राष्ट्रीय साइबर हेल्पलाइन)\n- cybercrime.gov.in पर ऑनलाइन शिकायत दर्ज करें\n- अपने बैंक को तुरंत सूचित करें\n        "
+  },
+  {
+    "id": "scam_telugu_001",
+    "topic": "Online Scams",
+    "title": "ఆన్‌లైన్ మోసాల నుండి ఎలా రక్షించుకోవాలి",
+    "language": "te",
+    "source": "సైబర్ క్రైమ్ పోర్టల్",
+    "content": "\nఆన్‌లైన్ ఆర్థిక మోసాలు - జాగ్రత్తలు:\n\nసాధారణ మోసాలు:\n1. KYC మోసం: మీ బ్యాంక్ ఖాతా బ్లాక్ అవుతుందని భయపెట్టి OTP అడుగుతారు.\n   జాగ్రత్త: బ్యాంక్ ఎప్పుడూ ఫోన్‌లో OTP అడగదు.\n\n2. లాటరీ మోసం: \"మీరు ₹50 లక్షలు గెలిచారు\" అని చెప్పి ముందు డబ్బు అడుగుతారు.\n   జాగ్రత్త: మీరు పాల్గొనని లాటరీలో మీరు గెలవలేరు.\n\n3. UPI PIN మోసం: \"డబ్బు స్వీకరించడానికి PIN నమోదు చేయండి\" అంటారు.\n   జాగ్రత్త: డబ్బు స్వీకరించడానికి PIN అవసరం లేదు; PIN నమోదు చేస్తే మీ డబ్బు పోతుంది.\n\nమోసం జరిగితే:\n- వెంటనే 1930 కి కాల్ చేయండి (జాతీయ సైబర్ నేర హెల్ప్‌లైన్)\n- cybercrime.gov.in లో ఫిర్యాదు దాఖలు చేయండి\n- మీ బ్యాంక్‌ని వెంటనే సంప్రదించండి\n        "
+  }
+]

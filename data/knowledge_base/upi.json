@@ -1,0 +1,34 @@
+[
+  {
+    "id": "upi_001",
+    "topic": "UPI",
+    "title": "What is UPI and How It Works",
+    "language": "en",
+    "source": "NPCI (National Payments Corporation of India)",
+    "content": "\nUPI (Unified Payments Interface) is a real-time payment system developed by the National Payments Corporation of India (NPCI).\nIt enables instant money transfers between bank accounts through mobile devices.\n\nKey features:\n- Available 24x7, including bank holidays\n- Transfer up to ₹1,00,000 per transaction (₹2,00,000 for verified merchants)\n- Uses a Virtual Payment Address (VPA) like yourname@bank instead of bank account details\n- Linked to your bank account – no separate wallet needed\n- Regulated by RBI (Reserve Bank of India)\n\nHow to create a UPI ID:\n1. Download a UPI-enabled app: PhonePe, Google Pay, Paytm, BHIM, or your bank's app\n2. Register with your mobile number linked to your bank account\n3. Choose a VPA (Virtual Payment Address) e.g., yourname@okaxis\n4. Set a 4 or 6 digit UPI PIN – this is your transaction password\n\nHow to send money via UPI:\n1. Open your UPI app\n2. Tap 'Send Money' or 'Pay'\n3. Enter the recipient's UPI ID, mobile number, or scan their QR code\n4. Enter the amount\n5. Add a note (optional)\n6. Enter your UPI PIN to confirm\n7. Transaction completes in seconds\n\nSafe UPI practices:\n- Never share your UPI PIN with anyone\n- Your bank/NPCI will never ask for your UPI PIN\n- Only enter PIN to SEND money, never to RECEIVE\n- Verify recipient details before confirming\n        "
+  },
+  {
+    "id": "upi_002",
+    "topic": "UPI",
+    "title": "UPI Safety and Common Mistakes",
+    "language": "en",
+    "source": "RBI Financial Literacy",
+    "content": "\nCommon UPI scams and how to avoid them:\n\n1. COLLECT REQUEST SCAM: Fraudsters send a collect/receive request saying \"approve this to get your refund.\"\n   WARNING: Approving a collect request means YOU are PAYING money, not receiving it.\n   Rule: You only need your UPI PIN to SEND money. Receiving money requires no PIN.\n\n2. SCREEN SHARING SCAM: Fraudster poses as customer care and asks you to install AnyDesk or TeamViewer.\n   They watch your screen to steal your UPI PIN and OTP.\n   Rule: Never share your screen for any financial transaction.\n\n3. FAKE QR CODE SCAM: A QR code is shared claiming it will help you receive money.\n   Scanning and paying authenticates payment TO the scammer.\n   Rule: QR codes are for paying, not receiving.\n\n4. FAKE CASHBACK SCAM: \"You won ₹5,000 cashback! Click here and enter your UPI PIN.\"\n   Rule: Legitimate cashbacks are credited automatically. No PIN is needed.\n\nImportant UPI numbers to know:\n- NPCI Helpline: 1800-120-1740\n- RBI Helpline: 14440\n- Cyber Crime Helpline: 1930\n\nIf you've been scammed:\n1. Immediately call 1930 (National Cyber Crime Helpline)\n2. Report at cybercrime.gov.in\n3. Contact your bank's fraud helpline\n4. File a police complaint with transaction details\n        "
+  },
+  {
+    "id": "upi_hindi_001",
+    "topic": "UPI",
+    "title": "UPI क्या है और कैसे काम करता है",
+    "language": "hi",
+    "source": "NPCI India",
+    "content": "\nUPI (यूनिफाइड पेमेंट्स इंटरफेस) भारत में एक तत्काल भुगतान प्रणाली है।\n\nUPI से पैसे कैसे भेजें:\n1. PhonePe, Google Pay, BHIM या अपने बैंक का ऐप खोलें\n2. 'पैसे भेजें' या 'Pay' पर क्लिक करें\n3. प्राप्तकर्ता का UPI ID या मोबाइल नंबर दर्ज करें\n4. राशि दर्ज करें\n5. UPI PIN दर्ज करें\n6. लेनदेन पूरा हो जाता है\n\nमहत्वपूर्ण सुरक्षा नियम:\n- अपना UPI PIN किसी के साथ साझा न करें\n- बैंक या NPCI कभी PIN नहीं मांगता\n- पैसे प्राप्त करने के लिए PIN की जरूरत नहीं होती\n- धोखाधड़ी होने पर 1930 पर कॉल करें\n        "
+  },
+  {
+    "id": "upi_bengali_001",
+    "topic": "UPI",
+    "title": "UPI দিয়ে নিরাপদে টাকা পাঠানো",
+    "language": "bn",
+    "source": "NPCI ভারত",
+    "content": "\nUPI (ইউনিফাইড পেমেন্টস ইন্টারফেস) - বাংলায় গাইড:\n\nUPI দিয়ে টাকা পাঠানোর পদ্ধতি:\n1. PhonePe, Google Pay বা আপনার ব্যাংকের অ্যাপ খুলুন\n2. 'টাকা পাঠান' বা 'Pay' এ ক্লিক করুন\n3. প্রাপকের UPI ID বা মোবাইল নম্বর দিন\n4. পরিমাণ লিখুন\n5. UPI PIN দিয়ে নিশ্চিত করুন\n\nগুরুত্বপূর্ণ নিরাপত্তা নিয়ম:\n- আপনার UPI PIN কখনো কারো সাথে শেয়ার করবেন না\n- ব্যাংক বা NPCI কখনো ফোনে PIN জিজ্ঞেস করে না\n- টাকা পেতে কোনো PIN লাগে না - শুধু পাঠাতে লাগে\n- সন্দেহজনক কিছু হলে 1930 নম্বরে কল করুন\n\nসাধারণ UPI প্রতারণা:\n- \"Collect Request অনুমোদন করুন তাহলে টাকা পাবেন\" - এটি মিথ্যা! অনুমোদন করলে আপনার টাকা যাবে\n- QR কোড দিয়ে টাকা আসে না, শুধু যায়\n- কেউ OTP বা PIN চাইলে সাথে সাথে ফোন রাখুন\n        "
+  }
+]

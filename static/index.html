@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FinLit AI – Digital Financial Literacy</title>
+
+<!-- Favicon: inline SVG data URI -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f62fe'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='18' fill='white'%3E%F0%9F%92%A1%3C/text%3E%3C/svg%3E"/>
+
+<style>
+/* ══════════════════════════════════════════════════════════
+   CSS CUSTOM PROPERTIES — Light & Dark themes
+   ══════════════════════════════════════════════════════════ */
+:root {
+  --ibm-blue:#0f62fe; --ibm-blue-hover:#0353e9;
+  --ibm-green:#24a148; --ibm-red:#da1e28; --ibm-yellow:#f1c21b;
+  --sidebar-bg:#161616; --sidebar-border:#393939; --sidebar-txt:#dde1e7;
+  --sidebar-sub:#a8b2d8; --sidebar-active:rgba(15,98,254,.18);
+  --bg-page:#f0f2f5; --bg-ui:#ffffff; --bg-surface:#f7f8fa;
+  --border:#e0e0e0; --border-strong:#c6c6c6;
+  --text-primary:#161616; --text-secondary:#525252; --text-muted:#8d8d8d;
+  --shadow:0 2px 10px rgba(0,0,0,.08); --shadow-lg:0 6px 24px rgba(0,0,0,.12);
+  --radius:10px; --radius-sm:6px;
+  --sidebar-w:280px;
+  --font-base:15px; --font-sm:13px; --font-xs:11px;
+}
+[data-theme="dark"] {
+  --bg-page:#0d0d0d; --bg-ui:#1c1c1c; --bg-surface:#242424;
+  --border:#333; --border-strong:#444;
+  --text-primary:#f4f4f4; --text-secondary:#a8a8a8; --text-muted:#6f6f6f;
+  --shadow:0 2px 10px rgba(0,0,0,.4); --shadow-lg:0 6px 24px rgba(0,0,0,.5);
+  --ibm-blue-hover:#4589ff;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESET + BASE
+   ══════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:var(--font-base);color:var(--text-primary);background:var(--bg-page);line-height:1.6}
+button{font-family:inherit;cursor:pointer}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:3px}
+
+/* ══════════════════════════════════════════════════════════
+   LAYOUT
+   ══════════════════════════════════════════════════════════ */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR
+   ══════════════════════════════════════════════════════════ */
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--sidebar-bg);color:#fff;display:flex;flex-direction:column;transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:20}
+.sidebar-header{padding:20px 18px 14px;border-bottom:1px solid var(--sidebar-border)}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.logo-icon{width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--ibm-blue) 0%,#4589ff 100%);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 2px 8px rgba(15,98,254,.4)}
+.logo-text{font-size:16px;font-weight:800;line-height:1.2;letter-spacing:-.3px}
+.logo-sub{font-size:11px;color:var(--sidebar-sub);margin-top:1px}
+.ibm-badge{margin-top:8px;display:inline-flex;align-items:center;gap:6px;background:rgba(15,98,254,.2);border:1px solid rgba(15,98,254,.5);padding:3px 10px;border-radius:20px;font-size:11px;color:#7eb3ff;font-weight:600}
+
+.lang-section{padding:12px 18px;border-bottom:1px solid var(--sidebar-border)}
+.lang-label{font-size:10px;color:var(--sidebar-sub);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;font-weight:600}
+.lang-select{width:100%;padding:7px 10px;background:#262626;border:1px solid #444;color:#fff;border-radius:var(--radius-sm);font-size:13px;cursor:pointer;transition:border-color .15s}
+.lang-select:focus{outline:none;border-color:var(--ibm-blue)}
+
+.topics-section{padding:12px 18px;flex:1;overflow-y:auto}
+.topics-label{font-size:10px;color:var(--sidebar-sub);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;font-weight:600}
+.topic-btn{width:100%;text-align:left;padding:9px 12px;background:transparent;border:1px solid transparent;color:var(--sidebar-txt);border-radius:var(--radius-sm);font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;transition:background .15s,border-color .15s,color .15s;margin-bottom:3px}
+.topic-btn:hover{background:var(--sidebar-active);border-color:rgba(15,98,254,.4);color:#fff}
+
+.sidebar-footer{padding:12px 18px;border-top:1px solid var(--sidebar-border);display:flex;flex-direction:column;gap:8px}
+.new-chat-btn{width:100%;padding:10px 16px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;transition:background .15s,transform .1s}
+.new-chat-btn:hover{background:var(--ibm-blue-hover)}
+.new-chat-btn:active{transform:scale(.98)}
+
+/* ══════════════════════════════════════════════════════════
+   MAIN AREA
+   ══════════════════════════════════════════════════════════ */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--bg-page)}
+
+/* Header */
+.chat-header{background:var(--bg-ui);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow);flex-shrink:0}
+.header-left{display:flex;align-items:center;gap:10px}
+.header-title{font-size:15px;font-weight:700;display:flex;align-items:center;gap:7px}
+.header-sub{font-size:12px;color:var(--text-secondary);margin-top:1px}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--ibm-green);display:inline-block;animation:pulse 2s infinite}
+.status-dot.offline{background:var(--text-muted);animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* Header right controls */
+.header-controls{display:flex;align-items:center;gap:8px}
+.ctrl-btn{padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-ui);color:var(--text-secondary);font-size:12px;font-weight:600;transition:background .15s,border-color .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.ctrl-btn:hover{background:var(--bg-surface);border-color:var(--border-strong);color:var(--text-primary)}
+.theme-toggle{min-width:36px;justify-content:center}
+
+/* Nav Tabs */
+.view-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg-ui);flex-shrink:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.view-tabs::-webkit-scrollbar{height:0}
+.view-tab{padding:10px 18px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--text-secondary);border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s;display:flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0}
+.view-tab.active{color:var(--ibm-blue);border-bottom-color:var(--ibm-blue)}
+.view-tab:hover:not(.active){color:var(--text-primary);background:var(--bg-surface)}
+
+/* View panels */
+.view-panel{display:none;flex-direction:column;flex:1;overflow:hidden}
+.view-panel.active{display:flex}
+
+/* ══════════════════════════════════════════════════════════
+   CHAT PANEL
+   ══════════════════════════════════════════════════════════ */
+.messages-wrap{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;scroll-behavior:smooth}
+
+/* Welcome screen */
+.welcome-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 24px;text-align:center}
+.welcome-icon{font-size:56px;margin-bottom:16px;filter:drop-shadow(0 4px 8px rgba(15,98,254,.2))}
+.welcome-title{font-size:22px;font-weight:800;margin-bottom:8px;color:var(--text-primary)}
+.welcome-sub{color:var(--text-secondary);max-width:440px;line-height:1.7;margin-bottom:28px;font-size:14px}
+.quick-questions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:560px}
+.quick-q{padding:8px 16px;background:var(--bg-ui);border:1.5px solid var(--border);border-radius:20px;font-size:13px;font-weight:500;color:var(--ibm-blue);transition:all .15s;box-shadow:var(--shadow)}
+.quick-q:hover{background:var(--ibm-blue);color:#fff;border-color:var(--ibm-blue);transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+
+/* Messages */
+.message{display:flex;gap:10px;max-width:86%;animation:msgIn .2s ease-out}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.message.user{align-self:flex-end;flex-direction:row-reverse}
+.message.assistant{align-self:flex-start}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;box-shadow:var(--shadow)}
+.message.user .msg-avatar{background:var(--ibm-blue);color:#fff}
+.message.assistant .msg-avatar{background:var(--bg-surface);border:1px solid var(--border)}
+.msg-content{display:flex;flex-direction:column;gap:5px;min-width:0}
+.msg-bubble{padding:12px 16px;border-radius:14px;line-height:1.7;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.message.user .msg-bubble{background:var(--ibm-blue);color:#fff;border-bottom-right-radius:4px}
+.message.assistant .msg-bubble{background:var(--bg-ui);border:1px solid var(--border);border-bottom-left-radius:4px;box-shadow:var(--shadow)}
+.msg-meta{font-size:11px;color:var(--text-muted);padding:0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.message.user .msg-meta{justify-content:flex-end}
+
+/* Message action buttons (Copy, Listen, etc.) */
+.msg-actions{display:flex;gap:5px;flex-wrap:wrap}
+.action-btn{display:flex;align-items:center;gap:4px;padding:3px 9px;border:1px solid var(--border);border-radius:14px;background:var(--bg-ui);color:var(--text-secondary);font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.action-btn:hover{background:var(--ibm-blue);color:#fff;border-color:var(--ibm-blue)}
+.action-btn.copied{background:var(--ibm-green);color:#fff;border-color:var(--ibm-green)}
+.action-btn.speaking{background:#8a3ffc;color:#fff;border-color:#8a3ffc}
+
+/* Feedback buttons */
+.feedback-btns{display:flex;gap:4px}
+.fb-btn{padding:3px 9px;border:1px solid var(--border);border-radius:12px;background:var(--bg-ui);color:var(--text-secondary);font-size:12px;transition:all .15s}
+.fb-btn:hover{background:var(--bg-surface)}
+.fb-btn.voted-up{background:#d1fae5;color:#065f46;border-color:var(--ibm-green)}
+.fb-btn.voted-down{background:#fee2e2;color:#991b1b;border-color:var(--ibm-red)}
+
+.sources-chips{display:flex;flex-wrap:wrap;gap:4px;padding:0 4px}
+.source-chip{padding:2px 8px;background:#dbeafe;color:#1e40af;border-radius:8px;font-size:11px;border:1px solid #bfdbfe}
+[data-theme="dark"] .source-chip{background:#1e3a5f;color:#93c5fd;border-color:#2563eb}
+.topic-tag{display:inline-block;padding:2px 9px;background:rgba(15,98,254,.1);color:var(--ibm-blue);border-radius:8px;font-size:11px;font-weight:600;margin-bottom:3px}
+.alert-box{padding:10px 14px;border-radius:var(--radius-sm);border-left:4px solid var(--ibm-red);background:#fff1f2;font-size:12px;margin-top:2px;font-weight:500}
+[data-theme="dark"] .alert-box{background:#3b1010}
+
+/* ── Typing animation (3 animated dots) ─────────────────── */
+.typing-bubble{padding:14px 18px;display:flex;align-items:center;gap:5px}
+.t-dot{width:8px;height:8px;border-radius:50%;background:var(--ibm-blue);opacity:.3;animation:tdot 1.4s ease-in-out infinite}
+.t-dot:nth-child(2){animation-delay:.2s}
+.t-dot:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{opacity:.3;transform:scale(1)}30%{opacity:1;transform:scale(1.3)}}
+
+/* Input area */
+.input-area{background:var(--bg-ui);border-top:1px solid var(--border);padding:14px 20px;flex-shrink:0}
+.input-row{display:flex;gap:8px;align-items:flex-end}
+.input-wrap{flex:1;display:flex;align-items:flex-end;border:2px solid var(--border);border-radius:12px;background:var(--bg-ui);transition:border-color .2s,box-shadow .2s}
+.input-wrap:focus-within{border-color:var(--ibm-blue);box-shadow:0 0 0 3px rgba(15,98,254,.12)}
+#userInput{flex:1;padding:11px 14px;border:none;background:transparent;font-size:14px;resize:none;max-height:130px;outline:none;font-family:inherit;line-height:1.6;color:var(--text-primary)}
+.send-btn{width:44px;height:44px;border-radius:10px;flex-shrink:0;background:var(--ibm-blue);color:#fff;border:none;font-size:20px;display:flex;align-items:center;justify-content:center;transition:background .15s,transform .1s;box-shadow:0 2px 8px rgba(15,98,254,.3)}
+.send-btn:hover:not(:disabled){background:var(--ibm-blue-hover);transform:scale(1.05)}
+.send-btn:disabled{background:var(--border-strong);cursor:not-allowed;box-shadow:none}
+.mic-btn{width:44px;height:44px;border-radius:10px;flex-shrink:0;background:var(--bg-ui);color:var(--text-secondary);border:2px solid var(--border);font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.mic-btn:hover{border-color:var(--ibm-blue);color:var(--ibm-blue);background:var(--bg-surface)}
+.mic-btn.recording{background:#da1e28;color:#fff;border-color:#da1e28;animation:micPulse 1s ease-in-out infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(218,30,40,.4)}50%{box-shadow:0 0 0 8px rgba(218,30,40,0)}}
+.input-row-meta{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.input-hints{font-size:11px;color:var(--text-muted)}
+.download-pdf-btn{display:flex;align-items:center;gap:5px;padding:5px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-ui);color:var(--text-secondary);font-size:11px;font-weight:600;transition:all .15s}
+.download-pdf-btn:hover{background:var(--ibm-blue);color:#fff;border-color:var(--ibm-blue)}
+
+/* ══════════════════════════════════════════════════════════
+   SCAM CHECKER
+   ══════════════════════════════════════════════════════════ */
+.scam-body{flex:1;overflow-y:auto;padding:22px 24px}
+.scam-intro{background:#fff7ed;border:1px solid #fed7aa;border-radius:var(--radius);padding:14px 16px;margin-bottom:18px;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+[data-theme="dark"] .scam-intro{background:#2c1a0a;border-color:#92400e}
+.scam-samples{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.scam-sample{padding:4px 11px;background:#fef3c7;border:1px solid #fcd34d;border-radius:12px;font-size:11px;cursor:pointer;color:#92400e;transition:background .15s;font-weight:500}
+.scam-sample:hover{background:#fde68a}
+[data-theme="dark"] .scam-sample{background:#2c1f00;border-color:#78350f;color:#fde68a}
+.scam-input-area{background:var(--bg-ui);border-top:1px solid var(--border);padding:16px 24px;flex-shrink:0}
+.scam-textarea-wrap{border:2px solid var(--border);border-radius:var(--radius);background:var(--bg-ui);transition:border-color .2s,box-shadow .2s;margin-bottom:10px}
+.scam-textarea-wrap:focus-within{border-color:var(--ibm-red);box-shadow:0 0 0 3px rgba(218,30,40,.1)}
+#scamInput{width:100%;padding:12px 14px;border:none;background:transparent;font-size:13px;resize:none;height:100px;outline:none;font-family:inherit;line-height:1.6;color:var(--text-primary)}
+.scam-actions-row{display:flex;gap:8px;align-items:center}
+.scam-check-btn{padding:10px 22px;background:var(--ibm-red);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;transition:background .15s,transform .1s;flex-shrink:0}
+.scam-check-btn:hover:not(:disabled){background:#b91c1c;transform:scale(1.02)}
+.scam-check-btn:disabled{background:var(--border-strong);cursor:not-allowed}
+.scam-clear-btn{padding:10px 16px;background:none;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;color:var(--text-secondary);transition:background .15s}
+.scam-clear-btn:hover{background:var(--bg-surface)}
+.char-count{font-size:11px;color:var(--text-muted);margin-left:auto}
+.scam-result{background:var(--bg-ui);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:var(--shadow-lg)}
+.risk-banner{padding:14px 18px;display:flex;align-items:center;gap:12px}
+.risk-banner.HIGH{background:#fef2f2;border-bottom:1px solid #fecaca}
+.risk-banner.MEDIUM{background:#fffbeb;border-bottom:1px solid #fde68a}
+.risk-banner.LOW{background:#f0fdf4;border-bottom:1px solid #bbf7d0}
+[data-theme="dark"] .risk-banner.HIGH{background:#2d0a0a;border-color:#7f1d1d}
+[data-theme="dark"] .risk-banner.MEDIUM{background:#2d1f00;border-color:#78350f}
+[data-theme="dark"] .risk-banner.LOW{background:#052e16;border-color:#166534}
+.risk-icon{font-size:28px;flex-shrink:0}
+.risk-level-label{font-size:19px;font-weight:900}
+.risk-level-label.HIGH{color:var(--ibm-red)}.risk-level-label.MEDIUM{color:#d97706}.risk-level-label.LOW{color:var(--ibm-green)}
+.risk-verdict{font-size:13px;color:var(--text-secondary);margin-top:2px}
+.risk-scam-type{margin-left:auto;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.risk-scam-type.HIGH{background:#fee2e2;color:#991b1b}.risk-scam-type.MEDIUM{background:#fef3c7;color:#92400e}.risk-scam-type.LOW{background:#dcfce7;color:#166534}
+.result-section{padding:14px 18px;border-bottom:1px solid var(--border)}
+.result-section:last-child{border-bottom:none}
+.result-section-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);margin-bottom:8px}
+.red-flags-list,.actions-list{display:flex;flex-direction:column;gap:6px}
+.red-flag-item{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;background:#fff1f2;border:1px solid #fecaca;border-radius:var(--radius-sm);font-size:13px;color:#991b1b;line-height:1.5}
+[data-theme="dark"] .red-flag-item{background:#2d0a0a;border-color:#7f1d1d;color:#fca5a5}
+.action-item{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:var(--radius-sm);font-size:13px;color:#166534;line-height:1.5}
+[data-theme="dark"] .action-item{background:#052e16;border-color:#166534;color:#86efac}
+.action-num{background:var(--ibm-green);color:#fff;width:18px;height:18px;border-radius:50%;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.helplines-row{display:flex;flex-wrap:wrap;gap:8px}
+.helpline-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius);padding:10px 14px;font-size:12px;flex:1;min-width:150px}
+[data-theme="dark"] .helpline-card{background:#1e3a5f;border-color:#2563eb}
+.helpline-number{font-size:18px;font-weight:900;color:var(--ibm-blue);display:block;margin-bottom:2px}
+.helpline-name{font-weight:700;font-size:12px}
+.helpline-note{color:var(--text-secondary);font-size:11px;margin-top:2px}
+.explanation-box{background:var(--bg-surface);border-radius:var(--radius-sm);padding:10px 13px;font-size:13px;color:var(--text-secondary);line-height:1.7}
+.granite-badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:#1e40af;background:#dbeafe;border-radius:8px;padding:1px 7px;margin-left:6px;font-weight:700}
+
+/* ══════════════════════════════════════════════════════════
+   DASHBOARD
+   ══════════════════════════════════════════════════════════ */
+.dash-body{flex:1;overflow-y:auto;padding:22px 24px}
+.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-card{background:var(--bg-ui);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.stat-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.stat-val{font-size:28px;font-weight:900;color:var(--ibm-blue);line-height:1}
+.stat-label{font-size:12px;color:var(--text-secondary);margin-top:4px;font-weight:500}
+.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.chart-card{background:var(--bg-ui);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow)}
+.chart-title{font-size:13px;font-weight:700;margin-bottom:12px;color:var(--text-primary)}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-label{font-size:12px;color:var(--text-secondary);width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;background:var(--bg-surface);border-radius:5px;height:14px;overflow:hidden}
+.bar-fill{height:100%;border-radius:5px;background:var(--ibm-blue);transition:width .7s cubic-bezier(.4,0,.2,1)}
+.bar-fill.scam{background:var(--ibm-red)}.bar-fill.lang{background:var(--ibm-green)}
+.bar-count{font-size:11px;color:var(--text-muted);width:28px;text-align:right;flex-shrink:0;font-weight:600}
+.feedback-ring{display:flex;align-items:center;gap:16px;padding:6px 0}
+.ring-svg{width:84px;height:84px;flex-shrink:0}
+.ring-text{font-size:13px;line-height:1.9}
+.fb-up{color:var(--ibm-green);font-weight:700}.fb-down{color:var(--ibm-red);font-weight:700}
+
+/* ══════════════════════════════════════════════════════════
+   CALCULATORS
+   ══════════════════════════════════════════════════════════ */
+.calc-body{flex:1;overflow-y:auto;padding:22px 24px}
+.calc-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:20px}
+.calc-tab{padding:9px 18px;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--text-secondary);border-bottom:2.5px solid transparent;transition:color .15s,border-color .15s}
+.calc-tab.active{color:var(--ibm-blue);border-bottom-color:var(--ibm-blue)}
+.calc-tab:hover:not(.active){color:var(--text-primary)}
+.calc-panel{display:none}.calc-panel.active{display:block}
+.calc-card{background:var(--bg-ui);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;box-shadow:var(--shadow);max-width:700px}
+.calc-card-title{font-size:15px;font-weight:700;margin-bottom:16px;color:var(--text-primary)}
+.calc-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.calc-field label{font-size:12px;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.calc-field input,.calc-field select{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s;font-family:inherit;background:var(--bg-ui);color:var(--text-primary)}
+.calc-field input:focus,.calc-field select:focus{border-color:var(--ibm-blue);box-shadow:0 0 0 3px rgba(15,98,254,.12)}
+.calc-btn{padding:11px 24px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;transition:background .15s,transform .1s}
+.calc-btn:hover{background:var(--ibm-blue-hover);transform:scale(1.02)}
+.calc-result{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:var(--radius);padding:16px 18px;margin-top:14px}
+[data-theme="dark"] .calc-result{background:#1e3a5f;border-color:#2563eb}
+.calc-result-title{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--text-secondary);margin-bottom:12px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.result-item-label{font-size:11px;color:var(--text-muted);font-weight:600}
+.result-item-val{font-size:19px;font-weight:900;color:var(--ibm-blue)}
+.budget-bars{display:flex;gap:0;border-radius:var(--radius-sm);overflow:hidden;height:30px;margin:12px 0}
+.budget-seg{display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;transition:width .7s}
+
+/* ══════════════════════════════════════════════════════════
+   TEST RESULTS
+   ══════════════════════════════════════════════════════════ */
+.test-body{flex:1;overflow-y:auto;padding:22px 24px}
+.test-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.run-test-btn{padding:10px 20px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:700;transition:background .15s}
+.run-test-btn:hover:not(:disabled){background:var(--ibm-blue-hover)}
+.run-test-btn:disabled{background:var(--border-strong);cursor:not-allowed}
+.test-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.test-stat{padding:9px 16px;border-radius:var(--radius-sm);font-size:13px;font-weight:700}
+.test-stat.pass{background:#dcfce7;color:#166534}
+.test-stat.partial{background:#fef3c7;color:#92400e}
+.test-stat.fail{background:#fee2e2;color:#991b1b}
+.test-stat.total{background:#eff6ff;color:#1e40af}
+.test-table{width:100%;border-collapse:collapse;font-size:13px}
+.test-table th{text-align:left;background:var(--bg-surface);padding:9px 12px;font-weight:700;border:1px solid var(--border);white-space:nowrap;color:var(--text-primary)}
+.test-table td{padding:9px 12px;border:1px solid var(--border);vertical-align:top;color:var(--text-primary)}
+.test-table tr:nth-child(even) td{background:var(--bg-surface)}
+.status-pill{padding:3px 9px;border-radius:10px;font-size:11px;font-weight:700;white-space:nowrap}
+.status-pill.PASS{background:#dcfce7;color:#166534}
+.status-pill.PARTIAL{background:#fef3c7;color:#92400e}
+.status-pill.FAIL,.status-pill.ERROR{background:#fee2e2;color:#991b1b}
+.status-pill.PENDING{background:var(--bg-surface);color:var(--text-muted)}
+.kw-score{font-weight:700}
+.kw-score.high{color:var(--ibm-green)}.kw-score.mid{color:#d97706}.kw-score.low{color:var(--ibm-red)}
+
+/* ══════════════════════════════════════════════════════════
+   QUIZ
+   ══════════════════════════════════════════════════════════ */
+.quiz-body{flex:1;overflow-y:auto;padding:22px 24px}
+.quiz-card{background:var(--bg-ui);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:680px;box-shadow:var(--shadow-lg)}
+.quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.quiz-progress-bar{flex:1;background:var(--bg-surface);border-radius:5px;height:9px;overflow:hidden}
+.quiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--ibm-blue),#4589ff);border-radius:5px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.quiz-progress-txt{font-size:12px;color:var(--text-muted);white-space:nowrap;font-weight:600}
+.quiz-score-badges{display:flex;gap:10px;margin-bottom:18px}
+.q-correct{color:var(--ibm-green);font-weight:700;font-size:13px}
+.q-wrong{color:var(--ibm-red);font-weight:700;font-size:13px}
+.quiz-q-num{font-size:11px;font-weight:800;color:var(--ibm-blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.quiz-question{font-size:16px;font-weight:700;line-height:1.6;margin-bottom:18px;color:var(--text-primary)}
+.quiz-options{display:flex;flex-direction:column;gap:9px;margin-bottom:16px}
+.quiz-option{padding:13px 16px;border:2px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:14px;text-align:left;background:var(--bg-ui);transition:all .15s;line-height:1.5;color:var(--text-primary);font-weight:500}
+.quiz-option:hover:not(:disabled):not(.correct):not(.wrong){border-color:var(--ibm-blue);background:#eff6ff;color:var(--ibm-blue)}
+.quiz-option.correct{border-color:var(--ibm-green);background:#f0fdf4;color:#166534;cursor:default}
+.quiz-option.wrong{border-color:var(--ibm-red);background:#fff1f2;color:#991b1b;cursor:default}
+.quiz-option:disabled{cursor:default}
+.quiz-explanation{background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--radius);padding:14px 16px;font-size:13px;line-height:1.7;margin-bottom:14px;display:none;color:var(--text-primary)}
+[data-theme="dark"] .quiz-explanation{background:#1e3a5f;border-color:#2563eb}
+.quiz-explanation.show{display:block}
+.quiz-next-btn{padding:10px 22px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;display:none;transition:background .15s,transform .1s}
+.quiz-next-btn.show{display:inline-block}
+.quiz-next-btn:hover{background:var(--ibm-blue-hover);transform:scale(1.02)}
+.quiz-result-card{text-align:center;padding:24px}
+.quiz-final-score{font-size:56px;font-weight:900;color:var(--ibm-blue);line-height:1}
+.quiz-final-label{font-size:15px;color:var(--text-secondary);margin-top:6px;margin-bottom:22px}
+.quiz-restart-btn{padding:12px 28px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;transition:background .15s}
+.quiz-restart-btn:hover{background:var(--ibm-blue-hover)}
+
+/* ══════════════════════════════════════════════════════════
+   WELCOME POPUP (first-visit modal)
+   ══════════════════════════════════════════════════════════ */
+.popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.popup-box{background:var(--bg-ui);border-radius:16px;padding:32px 28px;max-width:480px;width:100%;box-shadow:var(--shadow-lg);animation:slideUp .25s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.popup-logo{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--ibm-blue) 0%,#4589ff 100%);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 16px;box-shadow:0 4px 16px rgba(15,98,254,.3)}
+.popup-title{font-size:20px;font-weight:800;text-align:center;margin-bottom:20px;color:var(--text-primary)}
+.popup-row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;font-size:14px;line-height:1.7;color:var(--text-primary)}
+.popup-row-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+.popup-disclaimer{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:var(--text-secondary);margin-top:16px;line-height:1.6;border-left:3px solid var(--ibm-yellow)}
+.popup-got-it{width:100%;margin-top:20px;padding:13px;background:var(--ibm-blue);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;transition:background .15s,transform .1s;letter-spacing:.01em}
+.popup-got-it:hover{background:var(--ibm-blue-hover);transform:scale(1.01)}
+
+/* ══════════════════════════════════════════════════════════
+   MOBILE / RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
+.hamburger{display:none;background:none;border:none;font-size:22px;padding:4px 6px;border-radius:var(--radius-sm);color:var(--text-primary);transition:background .15s}
+.hamburger:hover{background:var(--bg-surface)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:15}
+
+@media (max-width:860px){
+  .sidebar{position:fixed;top:0;left:0;height:100vh;transform:translateX(-100%);box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .hamburger{display:flex;align-items:center}
+  .overlay.show{display:block}
+  .message{max-width:96%}
+  .dash-grid{grid-template-columns:1fr 1fr}
+  .dash-row{grid-template-columns:1fr}
+  .result-grid{grid-template-columns:1fr 1fr}
+  .calc-form{grid-template-columns:1fr}
+  .view-tab{padding:9px 12px;font-size:12px}
+  .chat-header{padding:10px 14px}
+  .input-area{padding:12px 14px}
+  .popup-box{padding:24px 20px}
+}
+@media (max-width:480px){
+  .dash-grid{grid-template-columns:1fr}
+  .ctrl-btn span{display:none}
+  .ctrl-btn{min-width:34px;justify-content:center}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══════════════════════════════════════════════════════════
+     WELCOME POPUP
+     ══════════════════════════════════════════════════════════ -->
+<div class="popup-overlay" id="welcomePopup" style="display:none">
+  <div class="popup-box">
+    <div class="popup-logo">&#x1F4A1;</div>
+    <div class="popup-title">Welcome to FinLit AI</div>
+    <div class="popup-row">
+      <div class="popup-row-icon">&#x1F4CB;</div>
+      <div><strong>What it does:</strong> Your AI-powered guide for UPI payments, spotting online scams, understanding interest rates, budgeting, and government savings schemes — in 10 Indian languages.</div>
+    </div>
+    <div class="popup-row">
+      <div class="popup-row-icon">&#x1F4AC;</div>
+      <div><strong>How to use:</strong> Type any financial question in the Chat tab, paste a suspicious SMS in the Scam Checker, crunch numbers in the Calculators, or test your knowledge in the Spot the Scam quiz.</div>
+    </div>
+    <div class="popup-disclaimer">
+      &#x26A0;&#xFE0F; <strong>Disclaimer:</strong> FinLit AI provides general financial literacy information only. It is not a licensed financial advisor. Always verify details with your bank, RBI, or a certified financial planner before making financial decisions.
+    </div>
+    <button class="popup-got-it" onclick="closePopup()">Got it, let&#x2019;s start &#x1F44D;</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     SIDEBAR
+     ══════════════════════════════════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo">
+      <div class="logo-icon">&#x1F4A1;</div>
+      <div>
+        <div class="logo-text">FinLit AI</div>
+        <div class="logo-sub">Digital Financial Literacy</div>
+      </div>
+    </div>
+    <div class="ibm-badge">&#x2B21; IBM Granite · RAG · AI</div>
+  </div>
+
+  <div class="lang-section">
+    <div class="lang-label">Language / &#x092D;&#x093E;&#x0937;&#x093E;</div>
+    <select class="lang-select" id="langSelect">
+      <option value="en">English</option>
+      <option value="hi">&#x0939;&#x093F;&#x0902;&#x0926;&#x0940; Hindi</option>
+      <option value="ta">&#x0BA4;&#x0BAE;&#x0BBF;&#x0BB4;&#x0BCD; Tamil</option>
+      <option value="te">&#x0C24;&#x0C46;&#x0C32;&#x0C41;&#x0C17;&#x0C41; Telugu</option>
+      <option value="bn">&#x09AC;&#x09BE;&#x0982;&#x09B2;&#x09BE; Bengali</option>
+      <option value="mr">&#x092E;&#x0930;&#x093E;&#x0920;&#x0940; Marathi</option>
+      <option value="gu">&#x0A97;&#x0AC1;&#x0A9C;&#x0AB0;&#x0ABE;&#x0AA4;&#x0AC0; Gujarati</option>
+      <option value="kn">&#x0C95;&#x0CA8;&#x0CCD;&#x0CA8;&#x0CA1; Kannada</option>
+      <option value="ml">&#x0D2E;&#x0D32;&#x0D2F;&#x0D3E;&#x0D33;&#x0D02; Malayalam</option>
+      <option value="pa">&#x0A2A;&#x0A70;&#x0A1C;&#x0A3E;&#x0A2C;&#x0A40; Punjabi</option>
+    </select>
+  </div>
+
+  <div class="topics-section">
+    <div class="topics-label">Quick Topics</div>
+    <button class="topic-btn" onclick="askTopic('How do I send money via UPI safely?')">&#x1F4B3; UPI &amp; Digital Payments</button>
+    <button class="topic-btn" onclick="askTopic('How can I identify and avoid online financial scams?')">&#x1F6E1;&#xFE0F; Scam Prevention</button>
+    <button class="topic-btn" onclick="askTopic('What is a safe interest rate for a personal loan?')">&#x1F4CA; Interest Rates &amp; Loans</button>
+    <button class="topic-btn" onclick="askTopic('How do I create a monthly budget and start saving?')">&#x1F4B0; Budgeting &amp; Savings</button>
+    <button class="topic-btn" onclick="askTopic('How do I start investing in mutual funds via SIP?')">&#x1F4C8; SIP &amp; Mutual Funds</button>
+    <button class="topic-btn" onclick="askTopic('What types of bank accounts are available?')">&#x1F3E6; Banking &amp; Accounts</button>
+    <button class="topic-btn" onclick="askTopic('What government savings schemes give the best returns?')">&#x1F3DB;&#xFE0F; Govt. Schemes (PPF/NPS)</button>
+    <button class="topic-btn" onclick="switchTab('scam');if(window.innerWidth<=860)closeSidebar();" style="border-color:#da1e28;color:#ff8389">&#x1F50D; Scam Checker Tool</button>
+    <button class="topic-btn" onclick="switchTab('calc');if(window.innerWidth<=860)closeSidebar();" style="border-color:#24a148;color:#42be65">&#x1F9EE; Calculators</button>
+    <button class="topic-btn" onclick="switchTab('dash');if(window.innerWidth<=860)closeSidebar();" style="border-color:#f1c21b;color:#f1c21b">&#x1F4CA; Insights Dashboard</button>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="new-chat-btn" onclick="newChat()">+ New Conversation</button>
+  </div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     MAIN
+     ══════════════════════════════════════════════════════════ -->
+<div class="main">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="header-left">
+      <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()">&#x2630;</button>
+      <div>
+        <div class="header-title">
+          <span class="status-dot" id="statusDot"></span>
+          FinLit AI Assistant
+        </div>
+        <div class="header-sub" id="headerSub">Initializing…</div>
+      </div>
+    </div>
+    <div class="header-controls">
+      <button class="ctrl-btn" onclick="showPopup()" title="About">&#x2139;&#xFE0F; <span>About</span></button>
+      <button class="ctrl-btn theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">&#x1F319;</button>
+    </div>
+  </div>
+
+  <!-- Nav Tabs -->
+  <div class="view-tabs">
+    <button class="view-tab active" id="tabChat" onclick="switchTab('chat')">&#x1F4AC; Chat</button>
+    <button class="view-tab" id="tabScam" onclick="switchTab('scam')">&#x1F50D; Scam Checker</button>
+    <button class="view-tab" id="tabDash" onclick="switchTab('dash')">&#x1F4CA; Dashboard</button>
+    <button class="view-tab" id="tabCalc" onclick="switchTab('calc')">&#x1F9EE; Calculators</button>
+    <button class="view-tab" id="tabTest" onclick="switchTab('test')">&#x2705; Test Results</button>
+    <button class="view-tab" id="tabQuiz" onclick="switchTab('quiz')">&#x1F9E0; Spot the Scam</button>
+  </div>
+
+  <!-- ════ CHAT ════════════════════════════════════════════ -->
+  <div class="view-panel active" id="panelChat">
+    <div class="messages-wrap" id="messagesWrap">
+      <div class="welcome-screen" id="chatWelcome">
+        <div class="welcome-icon">&#x1F4A1;</div>
+        <div class="welcome-title">Your Digital Financial Guide</div>
+        <div class="welcome-sub">Ask anything about UPI payments, avoiding scams, interest rates, budgeting, or government savings — in <em>any</em> language!</div>
+        <div class="quick-questions">
+          <button class="quick-q" onclick="sendQuick('How do I send money via UPI?')">How to send money via UPI?</button>
+          <button class="quick-q" onclick="sendQuick('What are common online financial scams?')">Common online scams?</button>
+          <button class="quick-q" onclick="sendQuick('What is a safe interest rate for a personal loan?')">Safe loan interest rate?</button>
+          <button class="quick-q" onclick="sendQuick('How do I budget my salary using the 50/30/20 rule?')">50/30/20 budget rule?</button>
+          <button class="quick-q" onclick="sendQuick('What is PPF and should I invest in it?')">What is PPF?</button>
+          <button class="quick-q" onclick="sendQuick('I received a suspicious KYC call. Is it a scam?')">Suspicious KYC call?</button>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <div class="input-row">
+        <div class="input-wrap">
+          <textarea id="userInput" placeholder="Ask about UPI, scams, loans, budgeting… (any language)" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+        </div>
+        <button class="mic-btn" id="micBtn" onclick="toggleVoiceInput()" title="Voice input (speak your question)">&#x1F3A4;</button>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()" title="Send (Enter)">&#x276F;</button>
+      </div>
+      <div class="input-row-meta">
+        <div class="input-hints">Enter to send &middot; Shift+Enter for new line &middot; &#x1F3A4; Voice input &middot; Hindi, Tamil, Bengali + 9 more</div>
+        <button class="download-pdf-btn" onclick="downloadPDF()" title="Download chat as PDF">&#x1F4E5; Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ SCAM CHECKER ════════════════════════════════════ -->
+  <div class="view-panel" id="panelScam">
+    <div class="scam-body" id="scamBody">
+      <div class="scam-intro">
+        <div style="font-size:20px;flex-shrink:0;margin-top:1px">&#x1F6A8;</div>
+        <div>
+          <strong>Paste any suspicious SMS, WhatsApp message, or email</strong> to check if it's a scam. IBM Granite identifies red flags, risk level, and tells you exactly what to do — including calling <strong>1930</strong>.
+          <div class="scam-samples">
+            <span class="scam-sample" onclick="loadSample('kyc')">KYC expiry SMS</span>
+            <span class="scam-sample" onclick="loadSample('prize')">Prize / lottery</span>
+            <span class="scam-sample" onclick="loadSample('refund')">Fake refund</span>
+            <span class="scam-sample" onclick="loadSample('loan')">Instant loan offer</span>
+            <span class="scam-sample" onclick="loadSample('invest')">Investment returns</span>
+            <span class="scam-sample" onclick="loadSample('bank')">Bank impersonation</span>
+          </div>
+        </div>
+      </div>
+      <div id="scamResult"></div>
+    </div>
+    <div class="scam-input-area">
+      <div class="scam-textarea-wrap">
+        <textarea id="scamInput" placeholder="Paste the suspicious message here…"></textarea>
+      </div>
+      <div class="scam-actions-row">
+        <button class="scam-check-btn" id="scamCheckBtn" onclick="checkScam()">&#x1F50D; Check for Scam</button>
+        <button class="scam-clear-btn" onclick="clearScam()">Clear</button>
+        <span class="char-count" id="charCount">0 / 5000</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ DASHBOARD ═══════════════════════════════════════ -->
+  <div class="view-panel" id="panelDash">
+    <div class="dash-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+        <div style="font-size:16px;font-weight:800">Insights Dashboard</div>
+        <button onclick="loadDash()" class="ctrl-btn">&#x21BB; Refresh</button>
+      </div>
+      <div class="dash-grid" id="dashStats"></div>
+      <div class="dash-row">
+        <div class="chart-card"><div class="chart-title">&#x1F4AC; Most-Asked Topics</div><div id="chartTopics"></div></div>
+        <div class="chart-card"><div class="chart-title">&#x1F30D; Language Usage</div><div id="chartLangs"></div></div>
+      </div>
+      <div class="dash-row">
+        <div class="chart-card"><div class="chart-title">&#x1F6A8; Scam Risk Levels Checked</div><div id="chartScamRisk"></div></div>
+        <div class="chart-card"><div class="chart-title">&#x1F44D; User Feedback</div><div id="chartFeedback"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ CALCULATORS ════════════════════════════════════ -->
+  <div class="view-panel" id="panelCalc">
+    <div class="calc-body">
+      <div class="calc-tabs">
+        <button class="calc-tab active" onclick="switchCalc('emi',this)">EMI Calculator</button>
+        <button class="calc-tab" onclick="switchCalc('interest',this)">Simple vs Compound</button>
+        <button class="calc-tab" onclick="switchCalc('budget',this)">50/30/20 Budget</button>
+      </div>
+
+      <!-- EMI -->
+      <div class="calc-panel active" id="calcEmi">
+        <div class="calc-card">
+          <div class="calc-card-title">&#x1F4B8; EMI (Equated Monthly Instalment) Calculator</div>
+          <div class="calc-form">
+            <div class="calc-field"><label>Loan Amount (&#x20B9;)</label><input type="number" id="emiPrincipal" value="500000" min="1000"></div>
+            <div class="calc-field"><label>Annual Interest Rate (%)</label><input type="number" id="emiRate" value="12" min="0.1" step="0.1"></div>
+            <div class="calc-field"><label>Loan Tenure (months)</label><input type="number" id="emiMonths" value="60" min="1"></div>
+            <div class="calc-field" style="display:flex;align-items:flex-end"><button class="calc-btn" onclick="calcEMI()">Calculate EMI</button></div>
+          </div>
+          <div class="calc-result" id="emiResult" style="display:none">
+            <div class="calc-result-title">Result</div>
+            <div class="result-grid">
+              <div><div class="result-item-label">Monthly EMI</div><div class="result-item-val" id="emiOut">-</div></div>
+              <div><div class="result-item-label">Total Payment</div><div class="result-item-val" id="emiTotal">-</div></div>
+              <div><div class="result-item-label">Total Interest</div><div class="result-item-val" id="emiInterest">-</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interest -->
+      <div class="calc-panel" id="calcInterest">
+        <div class="calc-card">
+          <div class="calc-card-title">&#x1F4B9; Simple vs Compound Interest</div>
+          <div class="calc-form">
+            <div class="calc-field"><label>Principal (&#x20B9;)</label><input type="number" id="intPrincipal" value="100000" min="100"></div>
+            <div class="calc-field"><label>Annual Rate (%)</label><input type="number" id="intRate" value="10" min="0.1" step="0.1"></div>
+            <div class="calc-field"><label>Time Period (years)</label><input type="number" id="intYears" value="5" min="1"></div>
+            <div class="calc-field"><label>Compound Frequency</label>
+              <select id="intFreq"><option value="1">Annually</option><option value="2">Semi-annually</option><option value="4">Quarterly</option><option value="12" selected>Monthly</option></select>
+            </div>
+          </div>
+          <button class="calc-btn" onclick="calcInterest()" style="margin-bottom:14px">Compare</button>
+          <div class="calc-result" id="intResult" style="display:none">
+            <div class="calc-result-title">Comparison</div>
+            <div class="result-grid">
+              <div><div class="result-item-label">Simple Interest Earned</div><div class="result-item-val" id="siVal">-</div></div>
+              <div><div class="result-item-label">Compound Interest Earned</div><div class="result-item-val" id="ciVal">-</div></div>
+              <div><div class="result-item-label">CI Advantage</div><div class="result-item-val" id="ciAdv" style="color:#d97706">-</div></div>
+            </div>
+            <div id="intNote" style="font-size:12px;color:var(--text-secondary);margin-top:12px;line-height:1.7;background:var(--bg-surface);border-radius:var(--radius-sm);padding:10px 12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Budget -->
+      <div class="calc-panel" id="calcBudget">
+        <div class="calc-card">
+          <div class="calc-card-title">&#x1F4B0; 50/30/20 Budget Planner</div>
+          <div class="calc-form" style="grid-template-columns:1fr 1fr">
+            <div class="calc-field"><label>Monthly Take-Home Income (&#x20B9;)</label><input type="number" id="budgetIncome" value="50000" min="1000"></div>
+            <div class="calc-field" style="display:flex;align-items:flex-end"><button class="calc-btn" onclick="calcBudget()">Plan Budget</button></div>
+          </div>
+          <div class="calc-result" id="budgetResult" style="display:none">
+            <div class="calc-result-title">Your Allocation</div>
+            <div class="budget-bars" id="budgetBars"></div>
+            <div id="budgetDetails"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ TEST RESULTS ════════════════════════════════════ -->
+  <div class="view-panel" id="panelTest">
+    <div class="test-body">
+      <div class="test-header-row">
+        <div>
+          <div style="font-size:16px;font-weight:800">Test Results — 20 Questions</div>
+          <div style="font-size:12px;color:var(--text-secondary);margin-top:3px">Validates IBM Granite answers against expected keywords and trusted sources</div>
+        </div>
+        <button class="run-test-btn" id="runTestBtn" onclick="runTests()">&#x25B6; Run All 20 Tests</button>
+      </div>
+      <div class="test-summary" id="testSummary" style="display:none"></div>
+      <div id="testTableWrap"></div>
+    </div>
+  </div>
+
+  <!-- ════ QUIZ ════════════════════════════════════════════ -->
+  <div class="view-panel" id="panelQuiz">
+    <div class="quiz-body">
+      <div style="font-size:16px;font-weight:800;margin-bottom:16px">&#x1F9E0; Spot the Scam — Mini Quiz</div>
+      <div class="quiz-card" id="quizCard"></div>
+    </div>
+  </div>
+
+</div><!-- .main -->
+</div><!-- .app -->
+
+<script>
+// ══════════════════════════════════════════════════════════
+// THEME
+// ══════════════════════════════════════════════════════════
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('themeBtn').textContent = t === 'dark' ? '\u2600\uFE0F' : '\uD83C\uDF19';
+  localStorage.setItem('finlit_theme', t);
+}
+(function () {
+  const saved = localStorage.getItem('finlit_theme') || 'light';
+  applyTheme(saved);
+})();
+function toggleTheme() {
+  const cur = document.documentElement.getAttribute('data-theme');
+  applyTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+// ══════════════════════════════════════════════════════════
+// WELCOME POPUP
+// ══════════════════════════════════════════════════════════
+function showPopup() { document.getElementById('welcomePopup').style.display = 'flex'; }
+function closePopup() {
+  document.getElementById('welcomePopup').style.display = 'none';
+  localStorage.setItem('finlit_seen', '1');
+}
+window.addEventListener('DOMContentLoaded', () => {
+  if (!localStorage.getItem('finlit_seen')) showPopup();
+  checkHealth();
+  document.getElementById('userInput').focus();
+  initQuiz();
+  loadTestStubs();
+});
+
+// ══════════════════════════════════════════════════════════
+// HEALTH CHECK
+// ══════════════════════════════════════════════════════════
+async function checkHealth() {
+  const dot = document.getElementById('statusDot');
+  const sub = document.getElementById('headerSub');
+  try {
+    const d = await fetch('/api/health').then(r => r.json());
+    if (d.status === 'healthy') {
+      dot.classList.remove('offline');
+      const s = d.stats || {};
+      sub.textContent = 'IBM Granite ' + (s.ibm_granite_enabled ? 'active' : 'fallback') + ' \xB7 ' + (s.knowledge_base_chunks||0) + ' chunks \xB7 ' + (s.supported_languages||10) + ' languages';
+    } else { dot.classList.add('offline'); sub.textContent = 'Service error'; }
+  } catch { dot.classList.add('offline'); sub.textContent = 'Server offline \u2014 run: python app.py'; }
+}
+
+// ══════════════════════════════════════════════════════════
+// TAB SWITCHING
+// ══════════════════════════════════════════════════════════
+function switchTab(tab) {
+  ['chat','scam','dash','calc','test','quiz'].forEach(t => {
+    const pid = 'panel' + t.charAt(0).toUpperCase() + t.slice(1);
+    const tid = 'tab' + t.charAt(0).toUpperCase() + t.slice(1);
+    document.getElementById(pid).classList.toggle('active', t === tab);
+    document.getElementById(tid).classList.toggle('active', t === tab);
+  });
+  if (tab === 'dash') loadDash();
+}
+
+// ══════════════════════════════════════════════════════════
+// CHAT
+// ══════════════════════════════════════════════════════════
+let sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+let isLoading = false;
+
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const message = input.value.trim();
+  if (!message || isLoading) return;
+  const lang = document.getElementById('langSelect').value;
+  const w = document.getElementById('chatWelcome');
+  if (w) w.remove();
+  appendMessage('user', message);
+  input.value = ''; input.style.height = 'auto';
+  setLoading(true);
+  const typingId = appendTyping();
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, session_id: sessionId, language: lang }),
+    });
+    const data = await res.json();
+    removeTyping(typingId);
+    if (data.error) appendAssistant('[Error] ' + (data.message || data.error), {}, []);
+    else appendAssistant(data.response, { topic: data.topic }, data.sources || []);
+  } catch {
+    removeTyping(typingId);
+    appendAssistant('[Network error] Please check the server is running.');
+  } finally { setLoading(false); }
+}
+function sendQuick(q) { document.getElementById('userInput').value = q; sendMessage(); }
+function askTopic(q) { switchTab('chat'); sendQuick(q); if (window.innerWidth <= 860) closeSidebar(); }
+function setLoading(s) { isLoading = s; document.getElementById('sendBtn').disabled = s; }
+
+function appendMessage(role, text) {
+  const wrap = document.getElementById('messagesWrap');
+  const div = document.createElement('div');
+  div.className = 'message ' + role;
+  const avatar = role === 'user' ? '&#x1F464;' : '&#x1F916;';
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  div.innerHTML = '<div class="msg-avatar">' + avatar + '</div><div class="msg-content"><div class="msg-bubble">' + escHtml(text) + '</div><div class="msg-meta">' + time + '</div></div>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function appendAssistant(text, meta, sources) {
+  const wrap = document.getElementById('messagesWrap');
+  const div = document.createElement('div');
+  div.className = 'message assistant';
+  const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const topicHtml = (meta && meta.topic) ? '<span class="topic-tag">' + escHtml(meta.topic) + '</span>' : '';
+  const srcHtml = (sources && sources.length)
+    ? '<div class="sources-chips">' + sources.map(s => '<span class="source-chip">&#x1F4D6; ' + escHtml(s) + '</span>').join('') + '</div>' : '';
+  const isScam = text.toLowerCase().includes('1930') || text.toLowerCase().includes('cybercrime');
+  const alertHtml = isScam ? '<div class="alert-box">&#x1F6A8; Emergency: Call <strong>1930</strong> &middot; Report at <strong>cybercrime.gov.in</strong></div>' : '';
+  const msgId = 'msg_' + Date.now();
+  // Action buttons: Copy, Listen, Feedback
+  const actionsHtml = '<div class="msg-actions">'
+    + '<button class="action-btn" id="copy_' + msgId + '" onclick="copyMsg(\'' + msgId + '\')" title="Copy answer">&#x1F4CB; Copy</button>'
+    + '<button class="action-btn" id="listen_' + msgId + '" onclick="listenMsg(\'' + msgId + '\')" title="Read aloud">&#x1F508; Listen</button>'
+    + '</div>';
+  const fbId = 'fb_' + msgId;
+  const fbHtml = '<div class="feedback-btns" id="' + fbId + '"><button class="fb-btn" onclick="sendFeedback(\'up\',\'' + fbId + '\')">&#x1F44D;</button><button class="fb-btn" onclick="sendFeedback(\'down\',\'' + fbId + '\')">&#x1F44E;</button></div>';
+  div.id = msgId;
+  div.dataset.text = text; // store for copy/listen
+  div.innerHTML = '<div class="msg-avatar">&#x1F916;</div><div class="msg-content">' + topicHtml + '<div class="msg-bubble">' + escHtml(text) + '</div>' + alertHtml + srcHtml + '<div class="msg-meta">' + time + actionsHtml + fbHtml + '</div></div>';
+  wrap.appendChild(div);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function appendTyping() {
+  const wrap = document.getElementById('messagesWrap');
+  const id = 'typing_' + Date.now();
+  const div = document.createElement('div');
+  div.className = 'message assistant'; div.id = id;
+  div.innerHTML = '<div class="msg-avatar">&#x1F916;</div><div class="msg-content"><div class="msg-bubble" style="padding:4px 8px"><div class="typing-bubble"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div></div></div>';
+  wrap.appendChild(div); wrap.scrollTop = wrap.scrollHeight; return id;
+}
+function removeTyping(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+// Copy button
+function copyMsg(msgId) {
+  const el = document.getElementById(msgId);
+  if (!el) return;
+  const text = el.dataset.text || el.querySelector('.msg-bubble')?.textContent || '';
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy_' + msgId);
+    if (btn) { btn.textContent = '&#x2714; Copied'; btn.classList.add('copied'); setTimeout(() => { btn.innerHTML = '&#x1F4CB; Copy'; btn.classList.remove('copied'); }, 2000); }
+  }).catch(() => {});
+}
+
+// Listen (text-to-speech)
+let currentUtterance = null;
+function listenMsg(msgId) {
+  const el = document.getElementById(msgId);
+  if (!el) return;
+  const text = el.dataset.text || el.querySelector('.msg-bubble')?.textContent || '';
+  const btn = document.getElementById('listen_' + msgId);
+  if (currentUtterance) { window.speechSynthesis.cancel(); currentUtterance = null; if (btn) { btn.innerHTML = '&#x1F508; Listen'; btn.classList.remove('speaking'); } return; }
+  if (!window.speechSynthesis) { alert('Speech synthesis is not supported in this browser.'); return; }
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = document.getElementById('langSelect').value === 'hi' ? 'hi-IN' : 'en-IN';
+  utter.rate = 0.92;
+  utter.onend = () => { currentUtterance = null; if (btn) { btn.innerHTML = '&#x1F508; Listen'; btn.classList.remove('speaking'); } };
+  currentUtterance = utter;
+  if (btn) { btn.innerHTML = '&#x23F9; Stop'; btn.classList.add('speaking'); }
+  window.speechSynthesis.speak(utter);
+}
+
+// Feedback
+async function sendFeedback(sentiment, fbId) {
+  const grp = document.getElementById(fbId);
+  if (!grp) return;
+  grp.querySelectorAll('.fb-btn').forEach(b => b.disabled = true);
+  const btn = sentiment === 'up' ? grp.querySelector('.fb-btn:first-child') : grp.querySelector('.fb-btn:last-child');
+  if (btn) btn.classList.add(sentiment === 'up' ? 'voted-up' : 'voted-down');
+  try { await fetch('/api/feedback', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sentiment }) }); } catch {}
+}
+
+// New Chat
+function newChat() {
+  fetch('/api/session/' + sessionId + '/reset', { method: 'DELETE' }).catch(() => {});
+  sessionId = 'sess_' + Math.random().toString(36).substr(2, 9);
+  const wrap = document.getElementById('messagesWrap');
+  wrap.innerHTML = '<div class="welcome-screen" id="chatWelcome"><div class="welcome-icon">&#x1F4A1;</div><div class="welcome-title">Your Digital Financial Guide</div><div class="welcome-sub">Ask anything about UPI, scams, interest rates, budgeting, or savings — in any language!</div><div class="quick-questions"><button class="quick-q" onclick="sendQuick(\'How do I send money via UPI?\')">How to send money via UPI?</button><button class="quick-q" onclick="sendQuick(\'What are common online financial scams?\')">Common online scams?</button><button class="quick-q" onclick="sendQuick(\'What is a safe interest rate for a loan?\')">Safe loan interest rate?</button><button class="quick-q" onclick="sendQuick(\'What is PPF and should I invest in it?\')">What is PPF?</button></div></div>';
+  switchTab('chat');
+  document.getElementById('userInput').focus();
+}
+
+// Download PDF
+function downloadPDF() {
+  const wrap = document.getElementById('messagesWrap');
+  const msgs = wrap.querySelectorAll('.message');
+  if (!msgs.length) { alert('No conversation to download yet. Ask a question first!'); return; }
+  let html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>FinLit AI Chat</title><style>body{font-family:Arial,sans-serif;font-size:13px;max-width:720px;margin:32px auto;color:#161616;line-height:1.6}.header{border-bottom:2px solid #0f62fe;padding-bottom:12px;margin-bottom:20px}.logo{font-size:20px;font-weight:800;color:#0f62fe}.sub{font-size:11px;color:#525252;margin-top:2px}.msg{margin-bottom:14px;padding:10px 14px;border-radius:8px}.user{background:#eff6ff;border-left:3px solid #0f62fe}.assistant{background:#f7f8fa;border-left:3px solid #24a148}.role{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#525252;margin-bottom:4px}.disclaimer{margin-top:24px;padding:10px 14px;background:#fff7ed;border-left:3px solid #f1c21b;font-size:11px;color:#525252}</style></head><body>';
+  html += '<div class="header"><div class="logo">&#128161; FinLit AI</div><div class="sub">Digital Financial Literacy Assistant &middot; ' + new Date().toLocaleString() + '</div></div>';
+  msgs.forEach(m => {
+    const role = m.classList.contains('user') ? 'user' : 'assistant';
+    const bubble = m.querySelector('.msg-bubble');
+    if (!bubble) return;
+    const text = bubble.textContent || '';
+    html += '<div class="msg ' + role + '"><div class="role">' + (role === 'user' ? 'You' : 'FinLit AI') + '</div>' + text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>') + '</div>';
+  });
+  html += '<div class="disclaimer"><strong>Disclaimer:</strong> FinLit AI provides general financial literacy information. It is not a licensed financial advisor. Verify details with your bank or a certified financial planner.</div>';
+  html += '</body></html>';
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'FinLit-AI-Chat-' + new Date().toISOString().slice(0,10) + '.html';
+  a.click(); URL.revokeObjectURL(url);
+}
+
+// Input helpers
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+function autoResize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 130) + 'px'; }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// ══════════════════════════════════════════════════════════
+// VOICE INPUT  (Web Speech API — Chrome/Edge)
+// ══════════════════════════════════════════════════════════
+let _recognition = null;
+let _isRecording = false;
+
+function toggleVoiceInput() {
+  const micBtn = document.getElementById('micBtn');
+  const input = document.getElementById('userInput');
+
+  // Check browser support
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert('Voice input is not supported in this browser.\nPlease use Chrome or Edge.');
+    return;
+  }
+
+  if (_isRecording) {
+    // Stop recording
+    if (_recognition) _recognition.stop();
+    return;
+  }
+
+  // Start recording
+  _recognition = new SpeechRecognition();
+  const langCode = document.getElementById('langSelect').value;
+  const langMap = { en: 'en-IN', hi: 'hi-IN', ta: 'ta-IN', te: 'te-IN', bn: 'bn-IN', mr: 'mr-IN', gu: 'gu-IN', kn: 'kn-IN', ml: 'ml-IN', pa: 'pa-IN' };
+  _recognition.lang = langMap[langCode] || 'en-IN';
+  _recognition.interimResults = true;
+  _recognition.maxAlternatives = 1;
+  _recognition.continuous = false;
+
+  _recognition.onstart = function() {
+    _isRecording = true;
+    micBtn.classList.add('recording');
+    micBtn.title = 'Recording… click to stop';
+    input.placeholder = 'Listening…';
+  };
+
+  _recognition.onresult = function(e) {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    input.value = transcript;
+    autoResize(input);
+  };
+
+  _recognition.onend = function() {
+    _isRecording = false;
+    micBtn.classList.remove('recording');
+    micBtn.title = 'Voice input (speak your question)';
+    input.placeholder = 'Ask about UPI, scams, loans, budgeting\u2026 (any language)';
+    // Auto-send if we captured something
+    if (input.value.trim()) sendMessage();
+  };
+
+  _recognition.onerror = function(e) {
+    _isRecording = false;
+    micBtn.classList.remove('recording');
+    micBtn.title = 'Voice input (speak your question)';
+    input.placeholder = 'Ask about UPI, scams, loans, budgeting\u2026 (any language)';
+    if (e.error !== 'no-speech' && e.error !== 'aborted') {
+      alert('Voice recognition error: ' + e.error + '\nMake sure microphone access is allowed.');
+    }
+  };
+
+  _recognition.start();
+}
+
+// ══════════════════════════════════════════════════════════
+// SCAM CHECKER
+// ══════════════════════════════════════════════════════════
+const SCAM_SAMPLES = {
+  kyc:'Dear Customer, Your KYC documents are about to expire. Account will be blocked in 24 hours. Update now: http://sbi-kyc-update.xyz/verify — enter your Aadhaar number and OTP. -SBI Bank',
+  prize:'Congratulations! You have been selected as a lucky winner of Rs.15,00,000 in the KBC Lottery 2024. To claim, pay Rs.5,000 processing fee via UPI to prize@lottery.in. Call 9876543210. Valid 24hrs!',
+  refund:'Dear user, we found an excess charge of Rs.2,340. To process your refund, please approve the UPI collect request sent to your PhonePe and enter your UPI PIN to receive money. -HDFC Customer Care',
+  loan:'Get INSTANT loan Rs.5 lakh NO documents required! Pre-approved. Guaranteed approval. Install app: bit.ly/fastloan99 and enter PAN + bank account. Funds in 10 minutes!',
+  invest:'Join EXCLUSIVE WhatsApp trading group! Earn GUARANTEED 3% DAILY returns. Members earned Rs.50,000 last week. Send Rs.10,000 to invest@returns.in to join. +91-9988776655',
+  bank:'This is a call from RBI Fraud Department. We detected suspicious activity on your account. Account blocked in 2 hours unless you share your card number, CVV and OTP with our officer.',
+};
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('scamInput').addEventListener('input', function() {
+    const len = this.value.length;
+    document.getElementById('charCount').textContent = len + ' / 5000';
+    document.getElementById('charCount').style.color = len > 4800 ? 'var(--ibm-red)' : 'var(--text-muted)';
+  });
+});
+function loadSample(k) {
+  const t = SCAM_SAMPLES[k] || '';
+  document.getElementById('scamInput').value = t;
+  document.getElementById('charCount').textContent = t.length + ' / 5000';
+  document.getElementById('scamResult').innerHTML = '';
+}
+function clearScam() {
+  document.getElementById('scamInput').value = '';
+  document.getElementById('charCount').textContent = '0 / 5000';
+  document.getElementById('scamResult').innerHTML = '';
+}
+async function checkScam() {
+  const message = document.getElementById('scamInput').value.trim();
+  if (!message) return;
+  const btn = document.getElementById('scamCheckBtn');
+  btn.disabled = true; btn.textContent = 'Analyzing…';
+  document.getElementById('scamResult').innerHTML = '<div class="scam-result" style="padding:24px;text-align:center"><div class="typing-bubble" style="justify-content:center"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div><p style="margin-top:10px;color:var(--text-secondary);font-size:13px">IBM Granite is analyzing the message…</p></div>';
+  document.getElementById('scamResult').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  try {
+    const data = await fetch('/api/scam-check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message }) }).then(r => r.json());
+    if (data.error) { document.getElementById('scamResult').innerHTML = '<div class="scam-result"><div class="result-section"><p style="color:var(--ibm-red)">Error: ' + escHtml(data.message || data.error) + '</p></div></div>'; }
+    else renderScamResult(data);
+  } catch { document.getElementById('scamResult').innerHTML = '<div class="scam-result"><div class="result-section"><p style="color:var(--ibm-red)">Network error.</p></div></div>'; }
+  finally { btn.disabled = false; btn.innerHTML = '&#x1F50D; Check for Scam'; document.getElementById('scamResult').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+function renderScamResult(data) {
+  const rl = data.risk_level || 'LOW';
+  const icons = { HIGH: '&#x1F6A8;', MEDIUM: '&#x26A0;&#xFE0F;', LOW: '&#x2705;' };
+  const flagsHtml = (data.red_flags || []).length ? (data.red_flags || []).map(f => '<div class="red-flag-item"><span style="flex-shrink:0">&#x26D4;</span>' + escHtml(f) + '</div>').join('') : '<p style="color:var(--text-muted);font-size:13px">No specific patterns matched.</p>';
+  const actionsHtml = (data.actions || []).map((a, i) => '<div class="action-item"><span class="action-num">' + (i + 1) + '</span>' + escHtml(a) + '</div>').join('');
+  const hlHtml = (data.helplines || []).map(h => '<div class="helpline-card"><span class="helpline-number">' + escHtml(h.number) + '</span><div class="helpline-name">' + escHtml(h.name) + '</div><div class="helpline-note">' + escHtml(h.note) + '</div></div>').join('');
+  const explHtml = data.explanation ? '<div class="result-section"><div class="result-section-title">How this scam works' + (data.granite_enhanced ? ' <span class="granite-badge">IBM Granite</span>' : '') + '</div><div class="explanation-box">' + escHtml(data.explanation) + '</div></div>' : '';
+  document.getElementById('scamResult').innerHTML = '<div class="scam-result"><div class="risk-banner ' + rl + '"><span class="risk-icon">' + (icons[rl] || icons.LOW) + '</span><div><div class="risk-level-label ' + rl + '">' + rl + ' RISK</div><div class="risk-verdict">' + escHtml(data.verdict || '') + '</div></div><span class="risk-scam-type ' + rl + '">' + escHtml(data.scam_type || 'Unknown') + '</span></div><div class="result-section"><div class="result-section-title">Red Flags Found (' + (data.red_flags || []).length + ')</div><div class="red-flags-list">' + flagsHtml + '</div></div>' + explHtml + '<div class="result-section"><div class="result-section-title">What You Should Do</div><div class="actions-list">' + actionsHtml + '</div></div><div class="result-section"><div class="result-section-title">Emergency Helplines</div><div class="helplines-row">' + hlHtml + '</div></div></div>';
+}
+
+// ══════════════════════════════════════════════════════════
+// DASHBOARD
+// ══════════════════════════════════════════════════════════
+const LANG_NAMES = {en:'English',hi:'Hindi',ta:'Tamil',te:'Telugu',bn:'Bengali',mr:'Marathi',gu:'Gujarati',kn:'Kannada',ml:'Malayalam',pa:'Punjabi'};
+async function loadDash() {
+  try {
+    const d = await fetch('/api/analytics').then(r => r.json());
+    const fb = d.feedback || {}, total_fb = (fb.thumbs_up || 0) + (fb.thumbs_down || 0);
+    const sat = total_fb ? Math.round((fb.thumbs_up || 0) / total_fb * 100) : 0;
+    document.getElementById('dashStats').innerHTML = [
+      { val: d.total_queries || 0, label: 'Total Queries' },
+      { val: d.total_sessions || 0, label: 'Unique Sessions' },
+      { val: d.scam_checks || 0, label: 'Scam Checks' },
+      { val: sat + '%', label: 'Satisfaction' },
+    ].map(s => '<div class="stat-card"><div class="stat-val">' + s.val + '</div><div class="stat-label">' + s.label + '</div></div>').join('');
+    renderBarChart('chartTopics', d.topics || {});
+    renderBarChart('chartLangs', d.languages || {}, 'lang', LANG_NAMES);
+    renderScamRiskChart(d.scam_risk_levels || {});
+    renderFeedbackChart(d.feedback || {});
+  } catch(e) { document.getElementById('dashStats').innerHTML = '<p style="color:var(--ibm-red);font-size:13px">Failed to load: ' + escHtml(String(e)) + '</p>'; }
+}
+function renderBarChart(elId, data, colorClass, labels) {
+  const el = document.getElementById(elId); if (!el) return;
+  const entries = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const max = entries.length ? entries[0][1] : 1;
+  if (!entries.length) { el.innerHTML = '<p style="color:var(--text-muted);font-size:12px;padding:8px 0">No data yet. Start using the app!</p>'; return; }
+  el.innerHTML = entries.map(([k, v]) => '<div class="bar-row"><span class="bar-label" title="' + escHtml((labels && labels[k]) || k) + '">' + escHtml((labels && labels[k]) || k) + '</span><div class="bar-track"><div class="bar-fill ' + (colorClass || '') + '" style="width:' + Math.round(v / max * 100) + '%"></div></div><span class="bar-count">' + v + '</span></div>').join('');
+}
+function renderScamRiskChart(rl) {
+  const el = document.getElementById('chartScamRisk'); if (!el) return;
+  const total = (rl.HIGH || 0) + (rl.MEDIUM || 0) + (rl.LOW || 0);
+  if (!total) { el.innerHTML = '<p style="color:var(--text-muted);font-size:12px;padding:8px 0">No scam checks yet.</p>'; return; }
+  el.innerHTML = [{ lbl: 'HIGH Risk', val: rl.HIGH || 0, c: '#da1e28' }, { lbl: 'MEDIUM Risk', val: rl.MEDIUM || 0, c: '#d97706' }, { lbl: 'LOW Risk', val: rl.LOW || 0, c: '#24a148' }].map(i => '<div class="bar-row"><span class="bar-label">' + i.lbl + '</span><div class="bar-track"><div class="bar-fill" style="width:' + Math.round(i.val / total * 100) + '%;background:' + i.c + '"></div></div><span class="bar-count">' + i.val + '</span></div>').join('');
+}
+function renderFeedbackChart(fb) {
+  const el = document.getElementById('chartFeedback'); if (!el) return;
+  const up = fb.thumbs_up || 0, down = fb.thumbs_down || 0, total = up + down;
+  const sat = total ? Math.round(up / total * 100) : 0, upPct = total ? Math.round(up / total * 100) : 50;
+  el.innerHTML = '<div class="feedback-ring"><svg class="ring-svg" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--bg-surface)" stroke-width="3.5"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#24a148" stroke-width="3.5" stroke-dasharray="' + upPct + ' ' + (100 - upPct) + '" stroke-dashoffset="25" stroke-linecap="round"/><text x="18" y="21" text-anchor="middle" font-size="7" font-weight="800" fill="#24a148">' + sat + '%</text></svg><div class="ring-text"><div><span class="fb-up">&#x1F44D; ' + up + '</span> thumbs up</div><div><span class="fb-down">&#x1F44E; ' + down + '</span> thumbs down</div><div style="margin-top:6px;font-size:11px;color:var(--text-muted)">' + total + ' total ratings</div></div></div>';
+}
+
+// ══════════════════════════════════════════════════════════
+// CALCULATORS
+// ══════════════════════════════════════════════════════════
+function switchCalc(id, btn) {
+  document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('calc' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active');
+  document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+function fmt(n) { return '\u20B9' + Math.round(n).toLocaleString('en-IN'); }
+function calcEMI() {
+  const P = +document.getElementById('emiPrincipal').value;
+  const R = +document.getElementById('emiRate').value / 12 / 100;
+  const N = +document.getElementById('emiMonths').value;
+  if (!P || !R || !N) return;
+  const emi = P * R * Math.pow(1 + R, N) / (Math.pow(1 + R, N) - 1);
+  const total = emi * N;
+  document.getElementById('emiOut').textContent = fmt(emi);
+  document.getElementById('emiTotal').textContent = fmt(total);
+  document.getElementById('emiInterest').textContent = fmt(total - P);
+  document.getElementById('emiResult').style.display = 'block';
+}
+function calcInterest() {
+  const P = +document.getElementById('intPrincipal').value;
+  const r = +document.getElementById('intRate').value / 100;
+  const t = +document.getElementById('intYears').value;
+  const n = +document.getElementById('intFreq').value;
+  if (!P || !r || !t) return;
+  const si = P * r * t, ci = P * (Math.pow(1 + r / n, n * t) - 1);
+  document.getElementById('siVal').textContent = fmt(si);
+  document.getElementById('ciVal').textContent = fmt(ci);
+  document.getElementById('ciAdv').textContent = fmt(ci - si) + ' more';
+  document.getElementById('intNote').textContent = 'On \u20B9' + P.toLocaleString('en-IN') + ' at ' + (r * 100) + '% for ' + t + ' years: Simple Interest = ' + fmt(si) + ', Compound Interest = ' + fmt(ci) + '. Compound earns ' + fmt(ci - si) + ' more — that is the power of compounding!';
+  document.getElementById('intResult').style.display = 'block';
+}
+function calcBudget() {
+  const income = +document.getElementById('budgetIncome').value;
+  if (!income || income < 1) return;
+  const needs = income * 0.5, wants = income * 0.3, savings = income * 0.2;
+  document.getElementById('budgetBars').innerHTML = '<div class="budget-seg" style="width:50%;background:#0f62fe">50% Needs</div><div class="budget-seg" style="width:30%;background:#24a148">30% Wants</div><div class="budget-seg" style="width:20%;background:#f1c21b;color:#161616">20% Save</div>';
+  document.getElementById('budgetDetails').innerHTML = [
+    { cat: 'NEEDS (50%) — ' + fmt(needs) + '/month', items: 'Rent/EMI, groceries, utilities, insurance, transport', bg: '#eff6ff', border: '#bfdbfe' },
+    { cat: 'WANTS (30%) — ' + fmt(wants) + '/month', items: 'Eating out, entertainment, shopping, OTT subscriptions, holidays', bg: '#f0fdf4', border: '#bbf7d0' },
+    { cat: 'SAVINGS (20%) — ' + fmt(savings) + '/month', items: 'Emergency fund, SIP/mutual funds, PPF, NPS, loan prepayment', bg: '#fefce8', border: '#fde68a' },
+  ].map(r => '<div style="background:' + r.bg + ';border:1px solid ' + r.border + ';border-radius:var(--radius-sm);padding:12px 14px;margin-top:9px"><div style="font-weight:700;font-size:13px">' + r.cat + '</div><div style="font-size:12px;color:var(--text-secondary);margin-top:3px">' + r.items + '</div></div>').join('');
+  document.getElementById('budgetResult').style.display = 'block';
+}
+
+// ══════════════════════════════════════════════════════════
+// TEST RESULTS
+// ══════════════════════════════════════════════════════════
+function loadTestStubs() {
+  fetch('/api/test-questions').then(r => r.json()).then(data => {
+    document.getElementById('testTableWrap').innerHTML = buildTestTable((data.questions || []).map(q => ({ ...q, status: 'PENDING', keyword_score: '-', source_ok: null, sources: [], answer_snippet: '' })));
+  }).catch(() => {});
+}
+async function runTests() {
+  const btn = document.getElementById('runTestBtn');
+  btn.disabled = true; btn.textContent = 'Running (may take ~2 min)…';
+  document.getElementById('testSummary').style.display = 'none';
+  document.getElementById('testTableWrap').innerHTML = '<div style="padding:20px;color:var(--text-secondary);font-size:13px;display:flex;align-items:center;gap:10px"><div class="typing-bubble"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div> Running 20 questions through IBM Granite… please wait</div>';
+  try {
+    const data = await fetch('/api/run-tests', { method: 'POST', headers: { 'Content-Type': 'application/json' } }).then(r => r.json());
+    if (data.error) { document.getElementById('testTableWrap').innerHTML = '<p style="color:var(--ibm-red);padding:14px;font-size:13px">Error: ' + escHtml(data.error) + '</p>'; return; }
+    const s = data.summary;
+    document.getElementById('testSummary').style.display = 'flex';
+    document.getElementById('testSummary').innerHTML = '<span class="test-stat total">Total: ' + s.total + '</span><span class="test-stat pass">PASS: ' + s.passed + '</span><span class="test-stat partial">PARTIAL: ' + s.partial + '</span><span class="test-stat fail">FAIL: ' + s.failed + '</span><span class="test-stat total">Pass Rate: ' + s.pass_rate + '%</span>';
+    document.getElementById('testTableWrap').innerHTML = buildTestTable(data.results);
+  } catch(e) { document.getElementById('testTableWrap').innerHTML = '<p style="color:var(--ibm-red);padding:14px;font-size:13px">Network error: ' + escHtml(String(e)) + '</p>'; }
+  finally { btn.disabled = false; btn.textContent = '\u25B6 Run All 20 Tests'; }
+}
+function buildTestTable(rows) {
+  const header = '<tr><th>#</th><th>Category</th><th>Question</th><th>Status</th><th>KW %</th><th>Source</th><th>Answer Preview</th></tr>';
+  const body = rows.map(r => {
+    const st = r.status || 'PENDING';
+    const kw = r.keyword_score === '-' ? '-' : (r.keyword_score + '%');
+    const kwCls = r.keyword_score >= 60 ? 'high' : r.keyword_score >= 40 ? 'mid' : 'low';
+    const srcIcon = r.source_ok === true ? '<span style="color:var(--ibm-green);font-weight:700">&#x2713;</span>' : r.source_ok === false ? '<span style="color:var(--ibm-red)">&#x2717;</span>' : '—';
+    return '<tr><td>' + r.id + '</td><td style="white-space:nowrap;font-size:11px">' + escHtml(r.category || '') + '</td><td style="font-size:12px">' + escHtml(r.question || '') + '</td><td><span class="status-pill ' + st + '">' + st + '</span></td><td class="kw-score ' + kwCls + '">' + kw + '</td><td style="text-align:center">' + srcIcon + '</td><td style="font-size:11px;color:var(--text-secondary);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + escHtml(r.answer_snippet || '') + '">' + escHtml((r.answer_snippet || '').substr(0, 80)) + '</td></tr>';
+  }).join('');
+  return '<div style="overflow-x:auto"><table class="test-table"><thead>' + header + '</thead><tbody>' + body + '</tbody></table></div>';
+}
+
+// ══════════════════════════════════════════════════════════
+// QUIZ
+// ══════════════════════════════════════════════════════════
+const QUIZ_QUESTIONS = [
+  { q: "You receive an SMS: 'Your SBI account KYC is expired. Click http://sbi-verify.xyz to update. Account blocked in 2 hours.' What do you do?", options: ["Click the link immediately — I need to save my account", "Call SBI's official helpline from the back of my card to check", "Share your Aadhaar and OTP as requested", "Ignore it — KYC never expires"], correct: 1, explanation: "This is a classic KYC phishing scam. The link is fake. Real SBI domain is onlinesbi.sbi. Always call the official number on the back of your card. KYC is done only at branches or via the official bank app." },
+  { q: "A WhatsApp message says: 'You won Rs.15 lakh in the Amazon lucky draw! Pay Rs.2,000 processing fee to claim.' What is this?", options: ["A genuine Amazon promotion", "An advance-fee scam — paying fees to claim a prize you never entered", "A tax you owe on lottery winnings", "An Amazon cashback offer"], correct: 1, explanation: "This is advance-fee fraud. You cannot win a lottery you never entered. Legitimate prizes never require upfront payment. Report to cybercrime.gov.in." },
+  { q: "Someone sends a UPI 'collect request' saying 'approve this to receive your refund of Rs.500.' What happens if you approve and enter your PIN?", options: ["You receive Rs.500", "You SEND Rs.500 from your account to the scammer", "Nothing happens", "Your UPI account gets verified"], correct: 1, explanation: "Approving a UPI collect request and entering your PIN means YOU are PAYING. Receiving money requires zero action from you — no PIN, no approval." },
+  { q: "A caller says: 'I am from the RBI Cyber Cell. Your account has suspicious transactions. Share your OTP to reverse them.' What do you do?", options: ["Share the OTP quickly to protect your account", "Hang up immediately — RBI never asks for OTP", "Ask for their employee ID first", "Transfer your money to a safe account they provide"], correct: 1, explanation: "RBI, banks, and no legitimate institution ever asks for OTP over phone. This is social engineering. Hang up and call 1930." },
+  { q: "You see a loan app offering 'Instant Rs.1 lakh, no documents, guaranteed approval.' It asks for camera, contacts, and gallery permissions. This is:", options: ["A legitimate fintech service", "A predatory loan scam — it uses your data to blackmail you", "An RBI-approved scheme", "Normal for video KYC"], correct: 1, explanation: "Legitimate NBFCs do not ask for excessive app permissions. These apps harvest your data and threaten to send morphed photos to contacts. Only borrow from RBI-registered banks/NBFCs." },
+  { q: "A Telegram group promises 'guaranteed 5% daily returns on trading.' SEBI-registered advisors offer max ~12% per year. This is:", options: ["A legitimate high-yield investment", "A Ponzi scheme — illegal in India, guaranteed to collapse", "A government-approved strategy", "A bank fixed deposit scheme"], correct: 1, explanation: "No legitimate investment guarantees returns, especially 5% daily = 1825% annually. SEBI prohibits guaranteed return promises. Report at scores.sebi.gov.in." },
+  { q: "Your bank SMS says 'OTP for your transaction is 847291. Do NOT share this with anyone.' Someone calls claiming to be bank staff and asks for it. You should:", options: ["Share it — they are your bank and need it", "NEVER share it — banks never ask for OTP on a call", "Read only the first 3 digits to verify", "Ask them to call back"], correct: 1, explanation: "The message itself says 'Do NOT share.' Your bank staff will NEVER ask for the OTP. Sharing it lets fraudsters authorise transactions from your account instantly." },
+  { q: "You find a 'customer care' number for Amazon on Google. The agent asks you to install 'AnyDesk' to resolve your refund. You should:", options: ["Install AnyDesk — it is a trusted app", "Refuse — screen sharing apps let fraudsters steal your banking credentials live", "Install only if they send an official email first", "Ask them to connect via the Amazon app chat"], correct: 1, explanation: "Fraudsters post fake customer care numbers on Google. Never install AnyDesk or TeamViewer at anyone's request. They watch your screen to steal OTPs and UPI PINs in real time." },
+  { q: "Which of these is a SAFE way to make a digital payment?", options: ["Enter UPI PIN after receiving a collect request to get a 'refund'", "Share your debit card number and CVV with a seller on WhatsApp", "Use an official bank app to pay using the receiver's UPI ID after verifying them", "Click a payment link in an unsolicited SMS"], correct: 2, explanation: "Always initiate payments yourself via official apps. Verify the recipient's UPI ID. Never enter your PIN in response to a collect request — that SENDS money. Never share card details or click unsolicited links." },
+  { q: "Where should you report a cyber financial fraud in India IMMEDIATELY?", options: ["Only to your local police station", "Call 1930 (National Cyber Crime Helpline) and file at cybercrime.gov.in", "Email RBI at governor@rbi.org.in", "Post about it on social media"], correct: 1, explanation: "1930 is India's National Cyber Crime Helpline — available 24x7. Report online at cybercrime.gov.in. Act within 3 hours for the best chance of fund recovery. Also contact your bank's fraud helpline simultaneously." },
+];
+let quizIdx = 0, quizScore = 0, quizAnswered = false;
+function initQuiz() { quizIdx = 0; quizScore = 0; renderQuizQuestion(); }
+function renderQuizQuestion() {
+  const card = document.getElementById('quizCard');
+  if (quizIdx >= QUIZ_QUESTIONS.length) {
+    const pct = Math.round(quizScore / QUIZ_QUESTIONS.length * 100);
+    const grade = pct >= 80 ? 'Excellent! You are scam-savvy! &#x1F3C6;' : pct >= 60 ? 'Good job! Review the explanations for the ones you missed.' : 'Keep learning — scammers rely on surprise! &#x1F4AA;';
+    card.innerHTML = '<div class="quiz-result-card"><div class="quiz-final-score">' + quizScore + '/' + QUIZ_QUESTIONS.length + '</div><div class="quiz-final-label">' + grade + '</div><button class="quiz-restart-btn" onclick="initQuiz()">Try Again &#x1F504;</button></div>';
+    return;
+  }
+  const q = QUIZ_QUESTIONS[quizIdx];
+  const pct = Math.round(quizIdx / QUIZ_QUESTIONS.length * 100);
+  quizAnswered = false;
+  card.innerHTML = '<div class="quiz-progress"><div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:' + pct + '%"></div></div><span class="quiz-progress-txt">Q' + (quizIdx + 1) + '/' + QUIZ_QUESTIONS.length + '</span></div>'
+    + '<div class="quiz-score-badges"><span class="q-correct">&#x2713; ' + quizScore + ' correct</span><span class="q-wrong">&#x2717; ' + (quizIdx - quizScore) + ' wrong</span></div>'
+    + '<div class="quiz-q-num">Question ' + (quizIdx + 1) + ' of ' + QUIZ_QUESTIONS.length + '</div>'
+    + '<div class="quiz-question">' + escHtml(q.q) + '</div>'
+    + '<div class="quiz-options">' + q.options.map((opt, i) => '<button class="quiz-option" id="qopt_' + i + '" onclick="selectAnswer(' + i + ')">' + escHtml(opt) + '</button>').join('') + '</div>'
+    + '<div class="quiz-explanation" id="quizExpl">&#x1F4A1; ' + escHtml(q.explanation) + '</div>'
+    + '<button class="quiz-next-btn" id="quizNextBtn" onclick="nextQuestion()">' + (quizIdx + 1 < QUIZ_QUESTIONS.length ? 'Next Question &#x2192;' : 'See My Score &#x1F3C6;') + '</button>';
+}
+function selectAnswer(idx) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = QUIZ_QUESTIONS[quizIdx];
+  if (idx === q.correct) quizScore++;
+  document.querySelectorAll('.quiz-option').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx && idx !== q.correct) btn.classList.add('wrong');
+  });
+  document.getElementById('quizExpl').classList.add('show');
+  document.getElementById('quizNextBtn').classList.add('show');
+}
+function nextQuestion() { quizIdx++; renderQuizQuestion(); }
+
+// ══════════════════════════════════════════════════════════
+// SIDEBAR
+// ══════════════════════════════════════════════════════════
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+</script>
+</body>
+</html>
