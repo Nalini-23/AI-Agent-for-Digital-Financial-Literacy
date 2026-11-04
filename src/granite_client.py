@@ -50,54 +50,79 @@ class GraniteClient:
             )
         return self._model
 
-    def generate(self, prompt: str, max_tokens: int = 600) -> str:
+    def generate(self, prompt: str, max_tokens: int = 600, _retries: int = 3) -> str:
         """
         Generate a response using IBM Granite chat API.
-
-        The prompt is treated as the user turn; system instruction is
-        embedded at the top of the prompt string by the agent's build_prompt().
+        Automatically retries on 429 rate-limit errors with exponential backoff.
 
         Args:
             prompt: Full prompt string (system context + user question combined)
             max_tokens: Maximum tokens to generate
+            _retries: Number of retry attempts on rate-limit (internal)
 
         Returns:
             Generated text response
         """
-        try:
-            # Use chat messages format for granite-4-h-small
-            # Split prompt into system + user parts if possible
-            system_text = (
-                "You are a helpful Digital Financial Literacy Assistant for India. "
-                "Answer questions about UPI, online scams, interest rates, budgeting, "
-                "and personal finance using the provided context. "
-                "Be clear, simple, and practical. Cite sources when available."
-            )
-            messages = [
-                {"role": "system", "content": system_text},
-                {"role": "user", "content": prompt},
-            ]
-            params = {
-                "max_tokens": max_tokens,
-                "temperature": 0.3,
-            }
-            response = self.model.chat(messages=messages, params=params)
-            # Extract text from chat response
-            result = (
-                response.get("choices", [{}])[0]
-                .get("message", {})
-                .get("content", "")
-                .strip()
-            )
-            return result if result else "I was unable to generate a response. Please try again."
-        except Exception as e:
-            err = str(e)
-            if "no_associated_service_instance" in err:
-                return (
-                    "IBM watsonx.ai service is not linked to this project. "
-                    "Please associate a Watson Machine Learning instance with your project."
+        import time
+
+        system_text = (
+            "You are a helpful Digital Financial Literacy Assistant for India. "
+            "Answer questions about UPI, online scams, interest rates, budgeting, "
+            "and personal finance using the provided context. "
+            "Be clear, simple, and practical. Cite sources when available."
+        )
+        messages = [
+            {"role": "system", "content": system_text},
+            {"role": "user", "content": prompt},
+        ]
+        params = {
+            "max_tokens": max_tokens,
+            "temperature": 0.3,
+        }
+
+        for attempt in range(_retries):
+            try:
+                response = self.model.chat(messages=messages, params=params)
+                result = (
+                    response.get("choices", [{}])[0]
+                    .get("message", {})
+                    .get("content", "")
+                    .strip()
                 )
-            return f"LLM error: {err}"
+                return result if result else "I was unable to generate a response. Please try again."
+
+            except Exception as e:
+                err = str(e)
+
+                # Rate limit (429) — wait and retry
+                if "429" in err or "consumption_limit_reached" in err:
+                    if attempt < _retries - 1:
+                        wait = 10 * (attempt + 1)  # 10s, 20s, 30s
+                        print(f"Rate limit hit, retrying in {wait}s (attempt {attempt + 1}/{_retries})")
+                        time.sleep(wait)
+                        continue
+                    return (
+                        "IBM Granite is currently busy (free tier rate limit reached). "
+                        "Please wait 30 seconds and try again. "
+                        "If this persists, try a shorter question or check your IBM Cloud usage."
+                    )
+
+                # Service not linked
+                if "no_associated_service_instance" in err:
+                    return (
+                        "IBM watsonx.ai service is not linked to this project. "
+                        "Please associate a Watson Machine Learning instance with your project."
+                    )
+
+                # Any other error on last attempt
+                if attempt == _retries - 1:
+                    return (
+                        "I encountered a temporary error. Please try again in a moment. "
+                        f"(Detail: {err[:120]})"
+                    )
+                time.sleep(3)
+
+        return "Unable to generate a response after multiple attempts. Please try again."
 
     def health_check(self) -> dict:
         """Check IBM Watson connection health."""
