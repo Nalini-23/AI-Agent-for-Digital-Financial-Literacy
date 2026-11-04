@@ -32,13 +32,24 @@ class FinancialRAGPipeline:
         self.persist_dir = persist_dir or os.getenv(
             "CHROMA_PERSIST_DIR", "./data/vector_store"
         )
-        Path(self.persist_dir).mkdir(parents=True, exist_ok=True)
 
-        # ChromaDB client with persistence
-        self.chroma_client = chromadb.PersistentClient(
-            path=self.persist_dir,
-            settings=Settings(anonymized_telemetry=False),
+        # Use in-memory ChromaDB when CHROMA_IN_MEMORY=1 (e.g. Render cloud)
+        # or when the persist dir is /tmp (ephemeral filesystem)
+        use_memory = (
+            os.getenv("CHROMA_IN_MEMORY", "0") == "1"
+            or self.persist_dir.startswith("/tmp")
         )
+
+        if use_memory:
+            self.chroma_client = chromadb.EphemeralClient(
+                settings=Settings(anonymized_telemetry=False),
+            )
+        else:
+            Path(self.persist_dir).mkdir(parents=True, exist_ok=True)
+            self.chroma_client = chromadb.PersistentClient(
+                path=self.persist_dir,
+                settings=Settings(anonymized_telemetry=False),
+            )
 
         # Local embedding model (fallback; IBM Slate used when available)
         self._embedding_model: Optional[SentenceTransformer] = None

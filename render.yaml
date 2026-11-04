@@ -2,8 +2,8 @@ services:
   - type: web
     name: finlit-ai
     runtime: python
-    buildCommand: "pip install -r requirements.txt && python setup.py"
-    startCommand: "gunicorn \"app:create_app()\" --bind 0.0.0.0:$PORT --timeout 120 --workers 1"
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn \"app:create_app()\" --bind 0.0.0.0:$PORT --timeout 180 --workers 1"
     envVars:
       - key: IBM_API_KEY
         sync: false
@@ -15,5 +15,7 @@ services:
         value: ibm/granite-4-h-small
       - key: FLASK_ENV
         value: production
-      - key: CHROMA_PERSIST_DIR
-        value: /tmp/vector_store
+      - key: CHROMA_IN_MEMORY
+        value: "1"
+      - key: PYTHON_VERSION
+        value: "3.11.9"
