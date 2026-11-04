@@ -329,4 +329,4 @@ or a certified financial planner.
 ---
 
 *Built for IBM Problem Statement #7 — AI Agent for Digital Financial Literacy*
-*Powered by IBM Granite · RAG · ChromaDB · Flask*
+*Powered by IBM Granite · RAG · 
